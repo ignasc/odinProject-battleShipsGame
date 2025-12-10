@@ -1,0 +1,11 @@
+# Ignore artifacts:
+build
+coverage
+
+# Ignore build directory:
+dist
+
+# Ignore files:
+package.json
+package-lock.json
+resetcss.css
