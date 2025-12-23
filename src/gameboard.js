@@ -29,7 +29,7 @@ class GameBoard {
         );
         //check if ship is within board boundaries
         if (isRotated90) {
-            if (coordY + shipLength < 10) {
+            if (coordY + shipLength <= 10) {
                 this.ships.push(newShip);
 
                 //reserve positions on board by referencing the ship instance
@@ -38,7 +38,7 @@ class GameBoard {
                 }
             }
         } else {
-            if (coordX + shipLength < 10) {
+            if (coordX + shipLength <= 10) {
                 this.ships.push(newShip);
 
                 //reserve positions on board by referencing the ship instance
