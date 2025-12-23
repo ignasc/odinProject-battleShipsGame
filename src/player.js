@@ -1,4 +1,4 @@
-import GameBoard from "./gameboard";
+import GameBoard from "./gameboard.js";
 
 class Player {
     constructor(isHuman = true, name = "Unknown") {

@@ -1,4 +1,4 @@
-import GameEngine from "./gameEngine";
+import GameEngine from "./gameEngine.js";
 
 describe("GameEngine class", () => {
     const player = new GameEngine();

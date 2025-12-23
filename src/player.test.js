@@ -1,5 +1,5 @@
-import Player from "./player";
-import Ship from "./ship";
+import Player from "./player.js";
+import Ship from "./ship.js";
 
 describe("Player class", () => {
     const player = new Player(true, "Ignas");
