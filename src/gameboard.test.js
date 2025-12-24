@@ -11,6 +11,12 @@ describe("Testing game board", () => {
         gameBoard.spawnShip(2, 2, 2, true, "player1");
         gameBoard.spawnShip(4, 0, 0, false, "player1");
         expect(gameBoard.ships[0]).toBeInstanceOf(Ship);
+
+        //Attempt to spawn ships in occupied areas
+        expect(gameBoard.spawnShip(4, 0, 0, false, "player1")).toBe(-1);
+        expect(gameBoard.spawnShip(4, 1, 0, false, "player1")).toBe(-1);
+        expect(gameBoard.spawnShip(4, 3, 0, false, "player1")).toBe(-1);
+        expect(gameBoard.spawnShip(1, 2, 3, false, "player1")).toBe(-1);
     });
     test("Test ship position and reference on board", () => {
         const gameBoard = new GameBoard();

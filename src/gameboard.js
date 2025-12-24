@@ -27,24 +27,42 @@ class GameBoard {
             isRotated90,
             playerOwner
         );
+
         //check if ship is within board boundaries
         if (isRotated90) {
-            if (coordY + shipLength <= 10) {
-                this.ships.push(newShip);
+            if (coordY + shipLength > 10) {
+                return -1;
+            }
+        } else {
+            if (coordX + shipLength > 10) {
+                return -1;
+            }
+        }
 
-                //reserve positions on board by referencing the ship instance
-                for (let i = 0; i < shipLength; i++) {
-                    this.board[coordY + i][coordX] = newShip;
+        //check if positions are already occupied
+        if (isRotated90) {
+            for (let i = 0; i < shipLength; i++) {
+                if (this.board[coordY + i][coordX] instanceof Ship) {
+                    return -1;
                 }
             }
         } else {
-            if (coordX + shipLength <= 10) {
-                this.ships.push(newShip);
-
-                //reserve positions on board by referencing the ship instance
-                for (let i = 0; i < shipLength; i++) {
-                    this.board[coordY][coordX + i] = newShip;
+            for (let i = 0; i < shipLength; i++) {
+                if (this.board[coordY][coordX + i] instanceof Ship) {
+                    return -1;
                 }
+            }
+        }
+
+        // reserve positions on board by referencing the ship instance
+        this.ships.push(newShip);
+        if (isRotated90) {
+            for (let i = 0; i < shipLength; i++) {
+                this.board[coordY + i][coordX] = newShip;
+            }
+        } else {
+            for (let i = 0; i < shipLength; i++) {
+                this.board[coordY][coordX + i] = newShip;
             }
         }
     }
