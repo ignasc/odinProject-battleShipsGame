@@ -7,11 +7,6 @@ body {
     gap: 2rem;
 }
 
-.single-square {
-    background-color: rgb(228, 228, 228);
-    border: 1px solid black;
-}
-
 .gameBoard {
     border: 1px solid black;
     height: 20rem;
