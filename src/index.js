@@ -1,4 +1,8 @@
+import "./css/resetcss.css";
+import "./css/styles.css";
+
 import GameEngine from "./gameEngine.js";
+import gameBoard from "./ui_gameboard_template.js";
 
 const game = new GameEngine();
 console.log("script loaded");
@@ -15,3 +19,11 @@ game.playerOne.placeShip(1, 9, 9, true);
 game.playerTwo.placeShip(3, 4, 4, true);
 game.playerTwo.placeShip(2, 0, 0, false);
 game.playerTwo.placeShip(1, 8, 8, true);
+
+const mainApp = document.getElementById("mainApp");
+
+const gameBoardPlayerOne = gameBoard.cloneNode(true);
+const gameBoardPlayerTwo = gameBoard.cloneNode(true);
+
+mainApp.appendChild(gameBoardPlayerOne);
+mainApp.appendChild(gameBoardPlayerTwo);
