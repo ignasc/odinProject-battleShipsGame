@@ -11,6 +11,10 @@ class Player {
         return this.name;
     }
 
+    getBoard() {
+        return this.gameBoard;
+    }
+
     placeShip(length, coordX, coordY, isRotated90) {
         this.gameBoard.spawnShip(length, coordX, coordY, isRotated90);
     }

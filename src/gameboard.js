@@ -9,7 +9,7 @@ class GameBoard {
         for (let i = 0; i < 10; i++) {
             const row = [];
             for (let j = 0; j < 10; j++) {
-                row.push(0);
+                row.push("empty");
             }
             this.board.push(row);
         }
@@ -17,6 +17,10 @@ class GameBoard {
 
     getPositionContents(coordX, coordY) {
         return this.board[coordY][coordX];
+    }
+
+    #setPositionContents(status, coordX, coordY) {
+        this.board[coordY][coordX] = status;
     }
 
     spawnShip(shipLength, coordX, coordY, isRotated90, playerOwner) {
@@ -84,9 +88,11 @@ class GameBoard {
 
         if (target instanceof Ship) {
             target.hit();
+            this.#setPositionContents("damaged", coordX, coordY);
             return 1;
         } else {
             this.missedAttacks++;
+            this.#setPositionContents("attacked", coordX, coordY);
             return -1;
         }
     }
