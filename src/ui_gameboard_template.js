@@ -12,25 +12,40 @@ class GameUI {
         this.playerTwoRef = playerTwoRef;
         this.gameEngine = gameEngine;
         this.mainApp = document.getElementById("mainApp");
+        this.playerOneTurn = true;
     }
 
-    updateUI(shipPlacement = false) {
+    updateUI() {
         this.mainApp.innerHTML = "";
+
+        const footer = document.createElement("div");
+
+        if (this.playerOneRef.getBoard().boardHidden) {
+            footer.innerHTML = "Player TWO turn";
+        } else {
+            footer.innerHTML = "Player ONE turn";
+        }
+
+        const shipPlacementActive =
+            !this.playerOneRef.getBoard().allShipsPlaced() ||
+            !this.playerTwoRef.getBoard().allShipsPlaced();
+
         const gameBoardPlayerOne = this.#createGameBoard(
             1,
             this.playerOneRef.getBoard(),
-            false,
-            shipPlacement
+            this.playerOneRef.getBoard().boardHidden,
+            shipPlacementActive
         );
         const gameBoardPlayerTwo = this.#createGameBoard(
             2,
             this.playerTwoRef.getBoard(),
-            true,
-            shipPlacement
+            this.playerTwoRef.getBoard().boardHidden,
+            shipPlacementActive
         );
 
         this.mainApp.appendChild(gameBoardPlayerOne);
         this.mainApp.appendChild(gameBoardPlayerTwo);
+        this.mainApp.appendChild(footer);
     }
 
     #createGameBoard(
@@ -41,70 +56,166 @@ class GameUI {
     ) {
         const gameBoardElement = document.createElement("div");
         gameBoardElement.setAttribute("class", "gameBoard");
+        let shipIsRotated = false;
+
+        // active board highlight
+        if (shipPlacement) {
+            if (!conceal) {
+                gameBoardElement.classList.toggle("gameBoard-green");
+            }
+        } else {
+            if (conceal) {
+                gameBoardElement.classList.toggle("gameBoard-green");
+            }
+        }
+
         gameBoardElement.setAttribute("id", "gameBoard" + playerNumber);
 
+        // fill boards with position squares
         for (let coordX = 0; coordX < 10; coordX++) {
             for (let coordY = 0; coordY < 10; coordY++) {
-                const element = singleSquare.cloneNode(true);
+                const newPositionSquareElement = singleSquare.cloneNode(true);
                 const positionContents = gameBoardRef.getPositionContents(
                     coordX,
                     coordY
                 );
 
+                // position square indications
                 if (positionContents === "attacked") {
-                    element.setAttribute("class", "position-attacked");
+                    newPositionSquareElement.setAttribute(
+                        "class",
+                        "position-attacked"
+                    );
                 } else if (positionContents === "damaged") {
-                    element.setAttribute("class", "position-ship-damaged");
+                    newPositionSquareElement.setAttribute(
+                        "class",
+                        "position-ship-damaged"
+                    );
                 } else if (conceal) {
-                    element.setAttribute("class", "position-unknown");
+                    newPositionSquareElement.setAttribute(
+                        "class",
+                        "position-unknown"
+                    );
                 } else if (positionContents instanceof Ship) {
-                    element.setAttribute("class", "position-ship-healthy");
+                    newPositionSquareElement.setAttribute(
+                        "class",
+                        "position-ship-healthy"
+                    );
                 } else {
-                    element.setAttribute("class", "position-unknown");
+                    newPositionSquareElement.setAttribute(
+                        "class",
+                        "position-unknown"
+                    );
                 }
 
-                element.setAttribute(
+                newPositionSquareElement.setAttribute(
                     "id",
                     playerNumber + "_" + "X" + coordX + "Y" + coordY
                 );
-                element.setAttribute("data-playerNo", playerNumber);
+                newPositionSquareElement.setAttribute(
+                    "data-playerNo",
+                    playerNumber
+                );
 
-                element.setAttribute("data-coordx", coordX);
-                element.setAttribute("data-coordy", coordY);
+                newPositionSquareElement.setAttribute("data-coordx", coordX);
+                newPositionSquareElement.setAttribute("data-coordy", coordY);
 
                 // event listeners: either ship placement or atacking
-                element.addEventListener("click", (e) => {
+                newPositionSquareElement.addEventListener("click", (e) => {
+                    e.preventDefault();
                     const coordX = e.target.getAttribute("data-coordx");
                     const coordY = e.target.getAttribute("data-coordy");
-                    e.preventDefault();
+
                     if (shipPlacement) {
-                        gameBoardRef.spawnShip(
-                            3,
-                            coordX,
-                            coordY,
-                            false,
-                            playerNumber
-                        );
-                        this.updateUI();
+                        if (!conceal) {
+                            gameBoardRef.spawnShip(
+                                gameBoardRef.getNextShip(),
+                                coordX,
+                                coordY,
+                                shipIsRotated,
+                                playerNumber
+                            );
+                            if (gameBoardRef.allShipsPlaced()) {
+                                this.playerOneRef.getBoard().toggleBoard();
+                                this.playerTwoRef.getBoard().toggleBoard();
+                            }
+                            this.updateUI();
+                        }
                     } else {
-                        gameBoardRef.receiveAttack(coordX, coordY);
-                        const positionStatus = gameBoardRef.getPositionContents(
-                            coordX,
-                            coordY
-                        );
-                        // this.#updatePositionStatus(
-                        //     positionStatus,
-                        //     playerNumber,
-                        //     coordX,
-                        //     coordY
-                        // );
+                        if (gameBoardRef.boardHidden) {
+                            const attackResult = gameBoardRef.receiveAttack(
+                                coordX,
+                                coordY
+                            );
+                            if (attackResult != 0) {
+                                this.playerOneRef.getBoard().toggleBoard();
+                                this.playerTwoRef.getBoard().toggleBoard();
+                            }
+                        }
+
                         this.updateUI();
                     }
                 });
 
-                gameBoardElement.appendChild(element);
+                // event listener to highlight ship placement
+                if (shipPlacement && !conceal) {
+                    // rotate ship placement using mouse wheel
+                    newPositionSquareElement.addEventListener("wheel", () => {
+                        shipIsRotated = !shipIsRotated;
+                    });
+                    // when mouse enters position element
+                    newPositionSquareElement.addEventListener(
+                        "mouseenter",
+                        (e) => {
+                            e.preventDefault();
+                            const shipLength = gameBoardRef.getNextShip();
+                            const coordX = e.target.getAttribute("data-coordx");
+                            const coordY = e.target.getAttribute("data-coordy");
+                            for (const child of gameBoardElement.children) {
+                                const childID = child.getAttribute("id");
+
+                                // only select positions that ship will cover
+                                for (let i = 0; i < shipLength; i++) {
+                                    if (!shipIsRotated) {
+                                        if (
+                                            childID ===
+                                            `${playerNumber}_X${+coordX + i}Y${+coordY}`
+                                        ) {
+                                            child.classList.add(
+                                                "position-ship-placing"
+                                            );
+                                        }
+                                    } else {
+                                        if (
+                                            childID ===
+                                            `${playerNumber}_X${+coordX}Y${+coordY + i}`
+                                        ) {
+                                            child.classList.add(
+                                                "position-ship-placing"
+                                            );
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    );
+
+                    // when mouse leaves position element
+                    newPositionSquareElement.addEventListener(
+                        "mouseleave",
+                        (e) => {
+                            e.preventDefault();
+                            for (const child of gameBoardElement.children) {
+                                child.classList.remove("position-ship-placing");
+                            }
+                        }
+                    );
+                }
+
+                gameBoardElement.appendChild(newPositionSquareElement);
             }
         }
+
         return gameBoardElement;
     }
 

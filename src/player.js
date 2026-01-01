@@ -1,10 +1,10 @@
 import GameBoard from "./gameboard.js";
 
 class Player {
-    constructor(isHuman = true, name = "Unknown") {
+    constructor(isHuman = true, name = "Unknown", playerNumber) {
         this.isHuman = isHuman;
         this.name = name;
-        this.gameBoard = new GameBoard();
+        this.gameBoard = new GameBoard(playerNumber);
     }
 
     getName() {

@@ -20,6 +20,14 @@ body {
     justify-items: stretch;
 }
 
+.gameBoard-green {
+    border: 5px solid green;
+}
+
+.position-ship-placing {
+    background-color: rgb(0, 180, 255) !important;
+}
+
 .position-ship-healthy {
     background-color: blue;
 }

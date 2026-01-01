@@ -1,7 +1,19 @@
 import Ship from "./ship.js";
 
+const surroundingPositionOffsets = [
+    [1, 1],
+    [1, 0],
+    [1, -1],
+    [0, -1],
+    [-1, -1],
+    [-1, 0],
+    [-1, 1],
+    [0, 1],
+    [0, 0],
+];
+
 class GameBoard {
-    constructor() {
+    constructor(playerNumber) {
         this.ships = [];
         this.board = [];
         this.positionsFired = [];
@@ -13,6 +25,14 @@ class GameBoard {
             }
             this.board.push(row);
         }
+
+        this.shipsLeftToPlace = [1, 1, 1, 2, 2, 3];
+        this.boardHidden = false;
+        this.playerNumber = parseInt(playerNumber);
+    }
+
+    getNextShip() {
+        return this.shipsLeftToPlace[this.shipsLeftToPlace.length - 1];
     }
 
     getPositionContents(coordX, coordY) {
@@ -25,6 +45,34 @@ class GameBoard {
 
     getBoardContents() {
         return this.board;
+    }
+
+    getPlayerNumber() {
+        return this.playerNumber;
+    }
+
+    toggleBoard() {
+        this.boardHidden = !this.boardHidden;
+    }
+
+    allShipsPlaced() {
+        return this.shipsLeftToPlace.length === 0 ? true : false;
+    }
+
+    #isShipPositionLegal(coordX, coordY) {
+        for (let i = 0; i < surroundingPositionOffsets.length; i++) {
+            const posOffset = surroundingPositionOffsets[i];
+            const offsetX = coordX + posOffset[0];
+            const offsetY = coordY + posOffset[1];
+            if (offsetX >= 0 && offsetY >= 0 && offsetX < 10 && offsetY < 10) {
+                if (
+                    this.getPositionContents(offsetX, offsetY) instanceof Ship
+                ) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     spawnShip(shipLength, coordX, coordY, isRotated90, playerOwner) {
@@ -48,16 +96,16 @@ class GameBoard {
                 return -1;
             }
         }
-        //check if positions are already occupied
+        //check if positions are legal (current and surrounding positions not occupied)
         if (isRotated90) {
             for (let i = 0; i < shipLength; i++) {
-                if (this.board[shipYcoord + i][shipXcoord] instanceof Ship) {
+                if (!this.#isShipPositionLegal(shipXcoord, shipYcoord + i)) {
                     return -1;
                 }
             }
         } else {
             for (let i = 0; i < shipLength; i++) {
-                if (this.board[shipYcoord][shipXcoord + i] instanceof Ship) {
+                if (!this.#isShipPositionLegal(shipXcoord + i, shipYcoord)) {
                     return -1;
                 }
             }
@@ -73,6 +121,7 @@ class GameBoard {
                 this.board[shipYcoord][shipXcoord + i] = newShip;
             }
         }
+        this.shipsLeftToPlace.pop();
     }
 
     receiveAttack(coordX, coordY) {
