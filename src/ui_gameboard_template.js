@@ -30,21 +30,56 @@ class GameUI {
             !this.playerOneRef.getBoard().allShipsPlaced() ||
             !this.playerTwoRef.getBoard().allShipsPlaced();
 
-        const gameBoardPlayerOne = this.#createGameBoard(
-            1,
-            this.playerOneRef.getBoard(),
-            this.playerOneRef.getBoard().boardHidden,
-            shipPlacementActive
-        );
-        const gameBoardPlayerTwo = this.#createGameBoard(
-            2,
-            this.playerTwoRef.getBoard(),
-            this.playerTwoRef.getBoard().boardHidden,
-            shipPlacementActive
-        );
+        // Player ONE ship placement
+        if (!this.playerOneRef.getBoard().allShipsPlaced()) {
+            const gameBoardPlayerOne = this.#createGameBoard(
+                1,
+                this.playerOneRef.getBoard(),
+                this.playerOneRef.getBoard().boardHidden,
+                shipPlacementActive
+            );
+            this.mainApp.appendChild(gameBoardPlayerOne);
+            footer.innerHTML = "Player ONE turn to allocate ships";
+        }
 
-        this.mainApp.appendChild(gameBoardPlayerOne);
-        this.mainApp.appendChild(gameBoardPlayerTwo);
+        // Player TWO ship placement
+        if (
+            this.playerOneRef.getBoard().allShipsPlaced() &&
+            !this.playerTwoRef.getBoard().allShipsPlaced()
+        ) {
+            const gameBoardPlayerTwo = this.#createGameBoard(
+                2,
+                this.playerTwoRef.getBoard(),
+                this.playerTwoRef.getBoard().boardHidden,
+                shipPlacementActive
+            );
+            this.mainApp.appendChild(gameBoardPlayerTwo);
+            footer.innerHTML = "Player TWO turn to allocate ships";
+        }
+
+        // Player ONE turn to attack
+        if (!shipPlacementActive && !this.playerOneRef.getBoard().boardHidden) {
+            const gameBoardPlayerTwo = this.#createGameBoard(
+                2,
+                this.playerTwoRef.getBoard(),
+                this.playerTwoRef.getBoard().boardHidden,
+                shipPlacementActive
+            );
+            this.mainApp.appendChild(gameBoardPlayerTwo);
+            footer.innerHTML = "Player ONE turn to attack";
+        }
+        // Player TWO turn to attack
+        if (!shipPlacementActive && !this.playerTwoRef.getBoard().boardHidden) {
+            const gameBoardPlayerOne = this.#createGameBoard(
+                1,
+                this.playerOneRef.getBoard(),
+                this.playerOneRef.getBoard().boardHidden,
+                shipPlacementActive
+            );
+            this.mainApp.appendChild(gameBoardPlayerOne);
+            footer.innerHTML = "Player TWO turn to attack";
+        }
+
         this.mainApp.appendChild(footer);
     }
 
@@ -217,18 +252,6 @@ class GameUI {
         }
 
         return gameBoardElement;
-    }
-
-    #updatePositionStatus(status, playerNumber, coordX, coordY) {
-        const gameBoardPosition = document.getElementById(
-            playerNumber + "_" + "X" + coordX + "Y" + coordY
-        );
-
-        if (status === "attacked") {
-            gameBoardPosition.setAttribute("class", "position-attacked");
-        } else if (status === "damaged") {
-            gameBoardPosition.setAttribute("class", "position-ship-damaged");
-        }
     }
 }
 
