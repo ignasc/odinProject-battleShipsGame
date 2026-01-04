@@ -5,6 +5,15 @@ class Player {
         this.isHuman = isHuman;
         this.name = name;
         this.gameBoard = new GameBoard(playerNumber);
+        this.playerTurn = true;
+        this.playerNumber = playerNumber;
+    }
+
+    disableInteraction() {
+        this.playerTurn = false;
+    }
+    enableInteraction() {
+        this.playerTurn = true;
     }
 
     getName() {

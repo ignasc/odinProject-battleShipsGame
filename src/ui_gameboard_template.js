@@ -13,12 +13,29 @@ class GameUI {
         this.gameEngine = gameEngine;
         this.mainApp = document.getElementById("mainApp");
         this.playerOneTurn = true;
+        this.btnMessage = "Start Game";
+        this.shipPlacementActive = true;
+        this.gameplayActive = false;
+
+        // initial game parameters
+        this.playerTwoRef.disableInteraction();
     }
 
     updateUI() {
         this.mainApp.innerHTML = "";
 
+        const gameBoards = document.createElement("div");
+        gameBoards.setAttribute("id", "game-boards");
+
+        let currentPlayer = null;
+
+        const controlButton = document.createElement("button");
+        // controlButton.innerHTML = this.btnMessage;
+        controlButton.setAttribute("id", "btn-control");
+
         const footer = document.createElement("div");
+        this.mainApp.appendChild(footer);
+        this.mainApp.appendChild(gameBoards);
 
         if (this.playerOneRef.getBoard().boardHidden) {
             footer.innerHTML = "Player TWO turn";
@@ -26,72 +43,165 @@ class GameUI {
             footer.innerHTML = "Player ONE turn";
         }
 
-        const shipPlacementActive =
-            !this.playerOneRef.getBoard().allShipsPlaced() ||
-            !this.playerTwoRef.getBoard().allShipsPlaced();
+        // this.shipPlacementActive =
+        //     !this.playerOneRef.getBoard().allShipsPlaced() ||
+        //     !this.playerTwoRef.getBoard().allShipsPlaced();
 
         // Player ONE ship placement
-        if (!this.playerOneRef.getBoard().allShipsPlaced()) {
+        if (this.shipPlacementActive && this.playerOneRef.playerTurn) {
+            currentPlayer = this.playerOneRef;
             const gameBoardPlayerOne = this.#createGameBoard(
                 1,
                 this.playerOneRef.getBoard(),
                 this.playerOneRef.getBoard().boardHidden,
-                shipPlacementActive
+                this.shipPlacementActive
             );
-            this.mainApp.appendChild(gameBoardPlayerOne);
+            const gameBoardPlayerTwo = this.#createGameBoard(
+                1,
+                this.playerTwoRef.getBoard(),
+                true,
+                false,
+                true
+            );
+            gameBoards.appendChild(gameBoardPlayerOne);
+            gameBoards.appendChild(gameBoardPlayerTwo);
             footer.innerHTML = "Player ONE turn to allocate ships";
+            this.btnMessage = "Hide board after ships are placed";
         }
 
         // Player TWO ship placement
-        if (
-            this.playerOneRef.getBoard().allShipsPlaced() &&
-            !this.playerTwoRef.getBoard().allShipsPlaced()
-        ) {
+        if (this.shipPlacementActive && this.playerTwoRef.playerTurn) {
+            currentPlayer = this.playerTwoRef;
             const gameBoardPlayerTwo = this.#createGameBoard(
                 2,
                 this.playerTwoRef.getBoard(),
                 this.playerTwoRef.getBoard().boardHidden,
-                shipPlacementActive
+                this.shipPlacementActive
             );
-            this.mainApp.appendChild(gameBoardPlayerTwo);
+            const gameBoardPlayerOne = this.#createGameBoard(
+                2,
+                this.playerTwoRef.getBoard(),
+                true,
+                false,
+                true
+            );
+            gameBoards.appendChild(gameBoardPlayerOne);
+            gameBoards.appendChild(gameBoardPlayerTwo);
             footer.innerHTML = "Player TWO turn to allocate ships";
+            this.btnMessage = "Hide board after ships are placed";
         }
 
         // Player ONE turn to attack
-        if (!shipPlacementActive && !this.playerOneRef.getBoard().boardHidden) {
+        if (this.gameplayActive && this.playerOneRef.playerTurn) {
+            currentPlayer = this.playerOneRef;
+            // generate game board
             const gameBoardPlayerTwo = this.#createGameBoard(
                 2,
                 this.playerTwoRef.getBoard(),
                 this.playerTwoRef.getBoard().boardHidden,
-                shipPlacementActive
+                this.shipPlacementActive
             );
-            this.mainApp.appendChild(gameBoardPlayerTwo);
+            const gameBoardPlayerOne = this.#createGameBoard(
+                2,
+                this.playerOneRef.getBoard(),
+                true,
+                false,
+                true
+            );
+            gameBoards.appendChild(gameBoardPlayerOne);
+            gameBoards.appendChild(gameBoardPlayerTwo);
+
+            // set messages
             footer.innerHTML = "Player ONE turn to attack";
+            // this.btnMessage = `Player ${currentPlayer.playerNumber}, attack enemy ship`;
         }
+
         // Player TWO turn to attack
-        if (!shipPlacementActive && !this.playerTwoRef.getBoard().boardHidden) {
+        if (this.gameplayActive && this.playerTwoRef.playerTurn) {
+            currentPlayer = this.playerTwoRef;
+            // generate game board
             const gameBoardPlayerOne = this.#createGameBoard(
                 1,
                 this.playerOneRef.getBoard(),
                 this.playerOneRef.getBoard().boardHidden,
-                shipPlacementActive
+                this.shipPlacementActive
             );
-            this.mainApp.appendChild(gameBoardPlayerOne);
+            const gameBoardPlayerTwo = this.#createGameBoard(
+                2,
+                this.playerTwoRef.getBoard(),
+                true,
+                false,
+                true
+            );
+            gameBoards.appendChild(gameBoardPlayerOne);
+            gameBoards.appendChild(gameBoardPlayerTwo);
+
+            // set messages
             footer.innerHTML = "Player TWO turn to attack";
+            // this.btnMessage = `Player ${currentPlayer.playerNumber}, attack enemy ship`;
         }
 
-        this.mainApp.appendChild(footer);
+        // Button to progress through game preparation
+        controlButton.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            // switch to player two ship placement
+            if (
+                this.shipPlacementActive &&
+                this.playerOneRef.getBoard().allShipsPlaced() &&
+                this.playerOneRef.playerTurn
+            ) {
+                this.playerOneRef.disableInteraction();
+                this.playerTwoRef.enableInteraction();
+                this.playerOneRef.getBoard().toggleBoard();
+                this.playerTwoRef.getBoard().toggleBoard();
+                this.updateUI();
+            }
+
+            //if all players finished placing ships, disable ship placement mode and switch to gameplay mode
+            if (
+                this.shipPlacementActive &&
+                !this.gameplayActive &&
+                this.playerOneRef.getBoard().allShipsPlaced() &&
+                this.playerTwoRef.getBoard().allShipsPlaced()
+            ) {
+                this.shipPlacementActive = false;
+                this.gameplayActive = true;
+                this.playerOneRef.enableInteraction();
+                this.playerTwoRef.disableInteraction();
+                this.playerTwoRef.getBoard().toggleBoard();
+                this.btnMessage = "Restart Game";
+                this.updateUI();
+            }
+        });
+
+        controlButton.innerHTML = this.btnMessage;
+        if (!this.gameplayActive) {
+            this.mainApp.appendChild(controlButton);
+        }
     }
 
     #createGameBoard(
         playerNumber,
         gameBoardRef = null,
         conceal = false,
-        shipPlacement = false
+        shipPlacement = false,
+        small = false
     ) {
         const gameBoardElement = document.createElement("div");
-        gameBoardElement.setAttribute("class", "gameBoard");
+        if (small) {
+            gameBoardElement.setAttribute("class", "gameBoard-small");
+        } else {
+            gameBoardElement.setAttribute("class", "gameBoard");
+        }
         let shipIsRotated = false;
+
+        let currentPlayer = null;
+        if (playerNumber === 1) {
+            currentPlayer = this.playerTwoRef;
+        } else {
+            currentPlayer = this.playerOneRef;
+        }
 
         // active board highlight
         if (shipPlacement) {
@@ -161,8 +271,8 @@ class GameUI {
                     const coordX = e.target.getAttribute("data-coordx");
                     const coordY = e.target.getAttribute("data-coordy");
 
-                    if (shipPlacement) {
-                        if (!conceal) {
+                    if (this.shipPlacementActive) {
+                        if (!conceal && !gameBoardRef.allShipsPlaced()) {
                             gameBoardRef.spawnShip(
                                 gameBoardRef.getNextShip(),
                                 coordX,
@@ -170,26 +280,27 @@ class GameUI {
                                 shipIsRotated,
                                 playerNumber
                             );
-                            if (gameBoardRef.allShipsPlaced()) {
-                                this.playerOneRef.getBoard().toggleBoard();
-                                this.playerTwoRef.getBoard().toggleBoard();
-                            }
-                            this.updateUI();
                         }
-                    } else {
-                        if (gameBoardRef.boardHidden) {
-                            const attackResult = gameBoardRef.receiveAttack(
-                                coordX,
-                                coordY
-                            );
-                            if (attackResult != 0) {
-                                this.playerOneRef.getBoard().toggleBoard();
-                                this.playerTwoRef.getBoard().toggleBoard();
+                    } else if (
+                        this.gameplayActive &&
+                        currentPlayer.playerTurn &&
+                        currentPlayer.playerNumber != gameBoardRef.playerNumber
+                    ) {
+                        // during gameplay gameBoardRef references enemy board
+                        const attackResult = gameBoardRef.receiveAttack(
+                            coordX,
+                            coordY
+                        );
+                        if (attackResult != 0) {
+                            currentPlayer.disableInteraction();
+                            if (currentPlayer.playerNumber === 1) {
+                                this.playerTwoRef.enableInteraction();
+                            } else {
+                                this.playerOneRef.enableInteraction();
                             }
                         }
-
-                        this.updateUI();
                     }
+                    this.updateUI();
                 });
 
                 // event listener to highlight ship placement
