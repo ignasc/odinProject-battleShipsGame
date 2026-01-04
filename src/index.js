@@ -11,7 +11,7 @@ import GameUI, {
 
 document.addEventListener("DOMContentLoaded", () => {
     const playerOne = new Player(true, "Ignas", 1);
-    const playerTwo = new Player(true, "Second Ignas", 2);
+    const playerTwo = new Player(false, "Second Ignas", 2);
     const game = new GameEngine(playerOne, playerTwo);
     const gameUI = new GameUI(playerOne, playerTwo, game);
 

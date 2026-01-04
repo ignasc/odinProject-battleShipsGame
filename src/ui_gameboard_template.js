@@ -119,6 +119,13 @@ class GameUI {
         // Player TWO turn to attack
         if (this.gameplayActive && this.playerTwoRef.playerTurn) {
             currentPlayer = this.playerTwoRef;
+            // if player to is computer, execute its move
+            if (!currentPlayer.isHuman) {
+                currentPlayer.executeComputerMove(this.playerOneRef.getBoard());
+                currentPlayer.disableInteraction();
+                this.playerOneRef.enableInteraction();
+                this.updateUI();
+            }
             // generate game board
             const gameBoardPlayerOne = this.#createGameBoard(
                 1,
@@ -268,6 +275,12 @@ class GameUI {
                 // event listeners: either ship placement or atacking
                 newPositionSquareElement.addEventListener("click", (e) => {
                     e.preventDefault();
+
+                    // if player is computer AI, disable all event listeners
+                    // if(!this.playerTwoRef.isHuman && playerNumber === 2){
+                    //     return;
+                    // }
+
                     const coordX = e.target.getAttribute("data-coordx");
                     const coordY = e.target.getAttribute("data-coordy");
 
