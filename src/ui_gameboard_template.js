@@ -5,6 +5,7 @@ Instead, using a factory function to return a new DOM element
 
 import Ship from "./ship.js";
 import singleSquare from "./ui_gameboard_single_square.js";
+import scoreBoard from "./ui_score_board.js";
 
 class GameUI {
     constructor(playerOneRef, playerTwoRef, gameEngine) {
@@ -63,8 +64,24 @@ class GameUI {
                 false,
                 true
             );
+            gameBoards.appendChild(
+                scoreBoard(
+                    this.playerOneRef.getBoard(),
+                    this.shipPlacementActive
+                )
+            );
+
             gameBoards.appendChild(gameBoardPlayerOne);
+
             gameBoards.appendChild(gameBoardPlayerTwo);
+
+            gameBoards.appendChild(
+                scoreBoard(
+                    this.playerTwoRef.getBoard(),
+                    this.shipPlacementActive
+                )
+            );
+
             footer.innerHTML = `${this.playerOneRef.name} turn to allocate ships`;
             this.btnMessage = "Hide board after ships are placed";
         }
@@ -85,8 +102,23 @@ class GameUI {
                 false,
                 true
             );
+            gameBoards.appendChild(
+                scoreBoard(
+                    this.playerOneRef.getBoard(),
+                    this.shipPlacementActive
+                )
+            );
+
             gameBoards.appendChild(gameBoardPlayerOne);
+
             gameBoards.appendChild(gameBoardPlayerTwo);
+
+            gameBoards.appendChild(
+                scoreBoard(
+                    this.playerTwoRef.getBoard(),
+                    this.shipPlacementActive
+                )
+            );
             footer.innerHTML = `${this.playerTwoRef.name} turn to allocate ships`;
             this.btnMessage = "Hide board after ships are placed";
         }
@@ -108,8 +140,23 @@ class GameUI {
                 false,
                 true
             );
+            gameBoards.appendChild(
+                scoreBoard(
+                    this.playerOneRef.getBoard(),
+                    this.shipPlacementActive
+                )
+            );
+
             gameBoards.appendChild(gameBoardPlayerOne);
+
             gameBoards.appendChild(gameBoardPlayerTwo);
+
+            gameBoards.appendChild(
+                scoreBoard(
+                    this.playerTwoRef.getBoard(),
+                    this.shipPlacementActive
+                )
+            );
 
             // set messages
             footer.innerHTML = `${this.playerOneRef.name} turn to attack`;
@@ -139,8 +186,23 @@ class GameUI {
                 false,
                 true
             );
+            gameBoards.appendChild(
+                scoreBoard(
+                    this.playerOneRef.getBoard(),
+                    this.shipPlacementActive
+                )
+            );
+
             gameBoards.appendChild(gameBoardPlayerOne);
+
             gameBoards.appendChild(gameBoardPlayerTwo);
+
+            gameBoards.appendChild(
+                scoreBoard(
+                    this.playerTwoRef.getBoard(),
+                    this.shipPlacementActive
+                )
+            );
 
             // set messages
             footer.innerHTML = `${this.playerTwoRef.name} turn to attack`;
@@ -372,7 +434,6 @@ class GameUI {
                 gameBoardElement.appendChild(newPositionSquareElement);
             }
         }
-
         return gameBoardElement;
     }
 }

@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
             formDataObj[key] = value;
         });
 
-        console.log(formDataObj);
+        // console.log(formDataObj);
 
         const playerOne = new Player(true, formDataObj["playerOneName"], 1);
         const playerTwo = new Player(
