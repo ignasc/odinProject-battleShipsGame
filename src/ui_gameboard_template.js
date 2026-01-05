@@ -65,7 +65,7 @@ class GameUI {
             );
             gameBoards.appendChild(gameBoardPlayerOne);
             gameBoards.appendChild(gameBoardPlayerTwo);
-            footer.innerHTML = "Player ONE turn to allocate ships";
+            footer.innerHTML = `${this.playerOneRef.name} turn to allocate ships`;
             this.btnMessage = "Hide board after ships are placed";
         }
 
@@ -87,7 +87,7 @@ class GameUI {
             );
             gameBoards.appendChild(gameBoardPlayerOne);
             gameBoards.appendChild(gameBoardPlayerTwo);
-            footer.innerHTML = "Player TWO turn to allocate ships";
+            footer.innerHTML = `${this.playerTwoRef.name} turn to allocate ships`;
             this.btnMessage = "Hide board after ships are placed";
         }
 
@@ -112,8 +112,7 @@ class GameUI {
             gameBoards.appendChild(gameBoardPlayerTwo);
 
             // set messages
-            footer.innerHTML = "Player ONE turn to attack";
-            // this.btnMessage = `Player ${currentPlayer.playerNumber}, attack enemy ship`;
+            footer.innerHTML = `${this.playerOneRef.name} turn to attack`;
         }
 
         // Player TWO turn to attack
@@ -144,8 +143,7 @@ class GameUI {
             gameBoards.appendChild(gameBoardPlayerTwo);
 
             // set messages
-            footer.innerHTML = "Player TWO turn to attack";
-            // this.btnMessage = `Player ${currentPlayer.playerNumber}, attack enemy ship`;
+            footer.innerHTML = `${this.playerTwoRef.name} turn to attack`;
         }
 
         // Button to progress through game preparation

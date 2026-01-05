@@ -9,10 +9,15 @@ class Player {
         this.playerNumber = playerNumber;
 
         this.aiMoves = [];
+        this.aiLevel = null;
 
         if (!this.isHuman) {
             this.#setupComputerAI();
         }
+    }
+
+    setAiLevel(level) {
+        this.aiLevel = level;
     }
 
     disableInteraction() {

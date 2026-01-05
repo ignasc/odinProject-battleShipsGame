@@ -8,6 +8,7 @@ const label = document.createElement("label");
 // player one
 const playerOneName = inputElement.cloneNode();
 playerOneName.setAttribute("type", "text");
+playerOneName.setAttribute("value", "Player 1");
 playerOneName.setAttribute("name", "playerOneName");
 const playerOneNameLabel = label.cloneNode();
 playerOneNameLabel.setAttribute("for", "playerOneName");
@@ -16,6 +17,7 @@ playerOneNameLabel.innerHTML = "Player One name: ";
 // player two
 const playerTwoName = inputElement.cloneNode();
 playerTwoName.setAttribute("type", "text");
+playerTwoName.setAttribute("value", "Player 2");
 playerTwoName.setAttribute("name", "playerTwoName");
 playerTwoName.setAttribute("id", "player-two-name");
 const playerTwoNameLabel = label.cloneNode();
