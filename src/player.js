@@ -43,6 +43,7 @@ class Player {
             }
         }
         // shuffle the array in semi-random order
+        this.#shuffleArray(arrayOfMoves);
         // to be implemented
         while (arrayOfMoves.length > 0) {
             this.aiMoves.push(arrayOfMoves.pop());
@@ -50,14 +51,28 @@ class Player {
 
         let safetyCounter = 100;
         while (safetyCounter > 0 && !this.gameBoard.allShipsPlaced()) {
+            const randomIndex = Math.floor(
+                Math.random() * (this.aiMoves.length - 1)
+            );
+
             this.gameBoard.spawnShip(
                 this.gameBoard.getNextShip(),
-                0 + safetyCounter,
-                0 + safetyCounter,
-                false,
+                this.aiMoves[randomIndex][0],
+                this.aiMoves[randomIndex][1],
+                Math.random() < 0.5 ? true : false,
                 2
             );
             safetyCounter--;
+        }
+    }
+
+    #shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1)); // random index from 0 to i
+
+            let t = array[i];
+            array[i] = array[j];
+            array[j] = t;
         }
     }
 
