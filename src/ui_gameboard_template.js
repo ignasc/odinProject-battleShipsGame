@@ -17,6 +17,7 @@ class GameUI {
         this.btnMessage = "Start Game";
         this.shipPlacementActive = true;
         this.gameplayActive = false;
+        this.gameEnded = false;
 
         // initial game parameters
         this.playerTwoRef.disableInteraction();
@@ -44,9 +45,60 @@ class GameUI {
             footer.innerHTML = "Player ONE turn";
         }
 
-        // this.shipPlacementActive =
-        //     !this.playerOneRef.getBoard().allShipsPlaced() ||
-        //     !this.playerTwoRef.getBoard().allShipsPlaced();
+        // Game winning conditions
+        if (
+            this.gameplayActive &&
+            (this.playerOneRef.getBoard().areAllShipsDestroyed() ||
+                this.playerTwoRef.getBoard().areAllShipsDestroyed())
+        ) {
+            this.gameplayActive = false;
+            this.gameEnded = true;
+            let winningPlayer = null;
+
+            this.playerOneRef.disableInteraction();
+            this.playerTwoRef.disableInteraction();
+
+            if (this.playerOneRef.getBoard().areAllShipsDestroyed()) {
+                winningPlayer = this.playerTwoRef;
+            } else {
+                winningPlayer = this.playerOneRef;
+            }
+            // generate game board
+            const gameBoardPlayerOne = this.#createGameBoard(
+                2,
+                this.playerOneRef.getBoard(),
+                false,
+                false,
+                false
+            );
+            const gameBoardPlayerTwo = this.#createGameBoard(
+                2,
+                this.playerTwoRef.getBoard(),
+                false,
+                false,
+                false
+            );
+            gameBoards.appendChild(
+                scoreBoard(
+                    this.playerOneRef.getBoard(),
+                    this.shipPlacementActive
+                )
+            );
+
+            gameBoards.appendChild(gameBoardPlayerOne);
+
+            gameBoards.appendChild(gameBoardPlayerTwo);
+
+            gameBoards.appendChild(
+                scoreBoard(
+                    this.playerTwoRef.getBoard(),
+                    this.shipPlacementActive
+                )
+            );
+
+            // set messages
+            footer.innerHTML = `${winningPlayer.name} has won the game!`;
+        }
 
         // Player ONE ship placement
         if (this.shipPlacementActive && this.playerOneRef.playerTurn) {
@@ -211,6 +263,11 @@ class GameUI {
         // Button to progress through game preparation
         controlButton.addEventListener("click", (e) => {
             e.preventDefault();
+            // game winning conditions
+            if (this.gameEnded) {
+                window.location.reload();
+                return;
+            }
 
             // switch to player two ship placement
             if (
@@ -243,7 +300,7 @@ class GameUI {
         });
 
         controlButton.innerHTML = this.btnMessage;
-        if (!this.gameplayActive) {
+        if (!this.gameplayActive || this.gameEnded) {
             this.mainApp.appendChild(controlButton);
         }
     }
@@ -335,6 +392,11 @@ class GameUI {
                 // event listeners: either ship placement or atacking
                 newPositionSquareElement.addEventListener("click", (e) => {
                     e.preventDefault();
+
+                    // disable all events when game has ended
+                    if (this.gameEnded) {
+                        return;
+                    }
 
                     // if player is computer AI, disable all event listeners
                     // if(!this.playerTwoRef.isHuman && playerNumber === 2){
