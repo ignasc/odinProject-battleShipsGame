@@ -20,6 +20,11 @@ First working alpha version with core features implemented:
 - Show list of ships left to place (currently two ships available: 1 off length 3 and 1 off length 2)
 - Show list of ships remaining to be destroyed.
 
+## Future plans
+
+- Prettier UI interface
+- 3 difficulty levels for computer opponent.
+
 ## Personal notes
 
 Another fairly challenging assignment due to certain new practices and tools being implemented. Mainly:
