@@ -3,11 +3,7 @@ import "./css/styles.css";
 
 import GameEngine from "./gameEngine.js";
 import Player from "./player.js";
-import GameUI, {
-    createEmptyGameBoard,
-    createGameBoard,
-    updatePositionStatus,
-} from "./ui_gameboard_template.js";
+import GameUI from "./ui_gameboard_template.js";
 import startMenu from "./ui_startMenu.js";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -23,8 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
         formData.forEach((value, key) => {
             formDataObj[key] = value;
         });
-
-        // console.log(formDataObj);
 
         const playerOne = new Player(true, formDataObj["playerOneName"], 1);
         const playerTwo = new Player(
@@ -48,7 +42,4 @@ document.addEventListener("DOMContentLoaded", () => {
     btnStartGame.textContent = "start game";
     document.getElementById("mainApp").appendChild(form);
     document.getElementById("mainApp").appendChild(btnStartGame);
-
-    // automatically trigger button for debug purposes.
-    // btnStartGame.click();
 });

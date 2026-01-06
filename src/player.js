@@ -49,7 +49,6 @@ class Player {
         }
         // shuffle the array in semi-random order
         this.#shuffleArray(arrayOfMoves);
-        // to be implemented
         while (arrayOfMoves.length > 0) {
             this.aiMoves.push(arrayOfMoves.pop());
         }

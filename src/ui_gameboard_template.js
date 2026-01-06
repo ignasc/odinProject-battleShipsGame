@@ -32,7 +32,6 @@ class GameUI {
         let currentPlayer = null;
 
         const controlButton = document.createElement("button");
-        // controlButton.innerHTML = this.btnMessage;
         controlButton.setAttribute("id", "btn-control");
 
         const footer = document.createElement("div");
@@ -397,11 +396,6 @@ class GameUI {
                     if (this.gameEnded) {
                         return;
                     }
-
-                    // if player is computer AI, disable all event listeners
-                    // if(!this.playerTwoRef.isHuman && playerNumber === 2){
-                    //     return;
-                    // }
 
                     const coordX = e.target.getAttribute("data-coordx");
                     const coordY = e.target.getAttribute("data-coordy");
