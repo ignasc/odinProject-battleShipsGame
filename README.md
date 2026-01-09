@@ -10,7 +10,7 @@ The game is currently in development. I have reached the stage where the game ca
 
 ## Version notes
 
-Current version: 0.1.0
+Current version: 0.2.0
 
 First working alpha version with core features implemented:
 
@@ -24,6 +24,8 @@ First working alpha version with core features implemented:
 
 - Prettier UI interface
 - 3 difficulty levels for computer opponent.
+- Play multiple games with the same player settings, and...
+- Track score, how many times each player wins.
 
 ## Personal notes
 
