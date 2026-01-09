@@ -26,8 +26,19 @@ class GameUI {
     updateUI() {
         this.mainApp.innerHTML = "";
 
-        const gameBoards = document.createElement("div");
-        gameBoards.setAttribute("id", "game-boards");
+        const gameBoardContainer = document.createElement("div");
+        gameBoardContainer.setAttribute("id", "game-boards");
+
+        const gameBoardPlayerOneContainer = document.createElement("div");
+        gameBoardPlayerOneContainer.setAttribute(
+            "class",
+            "game-board-player-container"
+        );
+        const gameBoardPlayerTwoContainer = document.createElement("div");
+        gameBoardPlayerTwoContainer.setAttribute(
+            "class",
+            "game-board-player-container"
+        );
 
         let currentPlayer = null;
 
@@ -36,7 +47,7 @@ class GameUI {
 
         const footer = document.createElement("div");
         this.mainApp.appendChild(footer);
-        this.mainApp.appendChild(gameBoards);
+        this.mainApp.appendChild(gameBoardContainer);
 
         if (this.playerOneRef.getBoard().boardHidden) {
             footer.innerHTML = "Player TWO turn";
@@ -77,23 +88,23 @@ class GameUI {
                 false,
                 false
             );
-            gameBoards.appendChild(
+            gameBoardPlayerOneContainer.appendChild(
                 scoreBoard(
                     this.playerOneRef.getBoard(),
                     this.shipPlacementActive
                 )
             );
 
-            gameBoards.appendChild(gameBoardPlayerOne);
+            gameBoardPlayerOneContainer.appendChild(gameBoardPlayerOne);
 
-            gameBoards.appendChild(gameBoardPlayerTwo);
-
-            gameBoards.appendChild(
+            gameBoardPlayerTwoContainer.appendChild(
                 scoreBoard(
                     this.playerTwoRef.getBoard(),
                     this.shipPlacementActive
                 )
             );
+
+            gameBoardPlayerTwoContainer.appendChild(gameBoardPlayerTwo);
 
             // set messages
             footer.innerHTML = `${winningPlayer.name} has won the game!`;
@@ -115,23 +126,23 @@ class GameUI {
                 false,
                 true
             );
-            gameBoards.appendChild(
+            gameBoardPlayerOneContainer.appendChild(
                 scoreBoard(
                     this.playerOneRef.getBoard(),
                     this.shipPlacementActive
                 )
             );
 
-            gameBoards.appendChild(gameBoardPlayerOne);
+            gameBoardPlayerOneContainer.appendChild(gameBoardPlayerOne);
 
-            gameBoards.appendChild(gameBoardPlayerTwo);
-
-            gameBoards.appendChild(
+            gameBoardPlayerTwoContainer.appendChild(
                 scoreBoard(
                     this.playerTwoRef.getBoard(),
                     this.shipPlacementActive
                 )
             );
+
+            gameBoardPlayerTwoContainer.appendChild(gameBoardPlayerTwo);
 
             footer.innerHTML = `${this.playerOneRef.name} turn to allocate ships`;
             this.btnMessage = "Hide board after ships are placed";
@@ -153,23 +164,24 @@ class GameUI {
                 false,
                 true
             );
-            gameBoards.appendChild(
+            gameBoardPlayerOneContainer.appendChild(
                 scoreBoard(
                     this.playerOneRef.getBoard(),
                     this.shipPlacementActive
                 )
             );
 
-            gameBoards.appendChild(gameBoardPlayerOne);
+            gameBoardPlayerOneContainer.appendChild(gameBoardPlayerOne);
 
-            gameBoards.appendChild(gameBoardPlayerTwo);
-
-            gameBoards.appendChild(
+            gameBoardPlayerTwoContainer.appendChild(
                 scoreBoard(
                     this.playerTwoRef.getBoard(),
                     this.shipPlacementActive
                 )
             );
+
+            gameBoardPlayerTwoContainer.appendChild(gameBoardPlayerTwo);
+
             footer.innerHTML = `${this.playerTwoRef.name} turn to allocate ships`;
             this.btnMessage = "Hide board after ships are placed";
         }
@@ -191,23 +203,23 @@ class GameUI {
                 false,
                 true
             );
-            gameBoards.appendChild(
+            gameBoardPlayerOneContainer.appendChild(
                 scoreBoard(
                     this.playerOneRef.getBoard(),
                     this.shipPlacementActive
                 )
             );
 
-            gameBoards.appendChild(gameBoardPlayerOne);
+            gameBoardPlayerOneContainer.appendChild(gameBoardPlayerOne);
 
-            gameBoards.appendChild(gameBoardPlayerTwo);
-
-            gameBoards.appendChild(
+            gameBoardPlayerTwoContainer.appendChild(
                 scoreBoard(
                     this.playerTwoRef.getBoard(),
                     this.shipPlacementActive
                 )
             );
+
+            gameBoardPlayerTwoContainer.appendChild(gameBoardPlayerTwo);
 
             // set messages
             footer.innerHTML = `${this.playerOneRef.name} turn to attack`;
@@ -237,27 +249,30 @@ class GameUI {
                 false,
                 true
             );
-            gameBoards.appendChild(
+            gameBoardPlayerOneContainer.appendChild(
                 scoreBoard(
                     this.playerOneRef.getBoard(),
                     this.shipPlacementActive
                 )
             );
 
-            gameBoards.appendChild(gameBoardPlayerOne);
+            gameBoardPlayerOneContainer.appendChild(gameBoardPlayerOne);
 
-            gameBoards.appendChild(gameBoardPlayerTwo);
-
-            gameBoards.appendChild(
+            gameBoardPlayerTwoContainer.appendChild(
                 scoreBoard(
                     this.playerTwoRef.getBoard(),
                     this.shipPlacementActive
                 )
             );
 
+            gameBoardPlayerTwoContainer.appendChild(gameBoardPlayerTwo);
+
             // set messages
             footer.innerHTML = `${this.playerTwoRef.name} turn to attack`;
         }
+
+        gameBoardContainer.appendChild(gameBoardPlayerOneContainer);
+        gameBoardContainer.appendChild(gameBoardPlayerTwoContainer);
 
         // Button to progress through game preparation
         controlButton.addEventListener("click", (e) => {

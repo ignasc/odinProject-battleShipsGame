@@ -3,6 +3,7 @@ body {
 }
 
 #mainApp {
+    padding: 2rem;
     display: flex;
     flex-direction: column;
     gap: 2rem;
@@ -42,9 +43,27 @@ body {
 
 #game-boards {
     display: flex;
-    flex-direction: row;
 
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 5rem;
+}
+
+.game-board-player-container {
+    display: flex;
+    padding: 1rem;
+    border: 1px solid grey;
+    border-radius: 10px;
+
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.score-board {
+    margin: 0.5rem;
+    border: 1px solid green;
+    flex-basis: 6rem;
 }
 
 .position-ship-placing {
@@ -69,7 +88,23 @@ body {
 
 #start-menu {
     display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 2rem;
+
+    /*debug*/
+    border: 1px solid grey;
+}
+
+#player-one-menu,
+#player-two-menu {
+    border: 1px solid grey;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    display: flex;
     flex-direction: column;
 
-    gap: 5px;
+    gap: 0.5rem;
 }
