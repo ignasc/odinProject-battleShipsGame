@@ -3,6 +3,8 @@ startMenu.setAttribute("id", "start-menu");
 
 const inputElement = document.createElement("input");
 
+const divElement = document.createElement("div");
+
 const label = document.createElement("label");
 
 // player one
@@ -79,14 +81,20 @@ const radioButtonHardLabel = label.cloneNode();
 radioButtonHardLabel.setAttribute("for", "computer-hard");
 radioButtonHardLabel.innerHTML = "Hard";
 
-startMenu.appendChild(playerOneNameLabel);
-startMenu.appendChild(playerOneName);
+//Menu splits
+const playerOneMenu = divElement.cloneNode();
+playerOneMenu.setAttribute("id", "player-one-menu");
+const playerTwoMenu = divElement.cloneNode();
+playerTwoMenu.setAttribute("id", "player-one-menu");
 
-startMenu.appendChild(playerTwoComputerOptionLabel);
-startMenu.appendChild(playerTwoComputerOption);
+playerOneMenu.appendChild(playerOneNameLabel);
+playerOneMenu.appendChild(playerOneName);
 
-startMenu.appendChild(playerTwoNameLabel);
-startMenu.appendChild(playerTwoName);
+playerTwoMenu.appendChild(playerTwoComputerOptionLabel);
+playerTwoMenu.appendChild(playerTwoComputerOption);
+
+playerTwoMenu.appendChild(playerTwoNameLabel);
+playerTwoMenu.appendChild(playerTwoName);
 
 computerLevelWrapper.appendChild(radioButtonEasyLabel);
 computerLevelWrapper.appendChild(radioButtonEasy);
@@ -94,6 +102,9 @@ computerLevelWrapper.appendChild(radioButtonNormalLabel);
 computerLevelWrapper.appendChild(radioButtonNormal);
 computerLevelWrapper.appendChild(radioButtonHardLabel);
 computerLevelWrapper.appendChild(radioButtonHard);
-startMenu.appendChild(computerLevelWrapper);
+playerTwoMenu.appendChild(computerLevelWrapper);
+
+startMenu.appendChild(playerOneMenu);
+startMenu.appendChild(playerTwoMenu);
 
 export default startMenu;

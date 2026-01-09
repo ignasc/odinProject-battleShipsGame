@@ -3,6 +3,7 @@ function scoreBoard(boardReference, shipPlacementActive = null) {
         return document.createElement("div");
     }
     const divWrapper = document.createElement("div");
+    divWrapper.setAttribute("class", "score-board");
 
     const shipListFooter = document.createElement("p");
     const shipListContainer = document.createElement("ul");
