@@ -64,14 +64,14 @@ class GameUI {
             }
             // generate game board
             const gameBoardPlayerOne = this.#createGameBoard(
-                2,
+                this.playerOneRef.playerNumber,
                 this.playerOneRef.getBoard(),
                 false,
                 false,
                 false
             );
             const gameBoardPlayerTwo = this.#createGameBoard(
-                2,
+                this.playerTwoRef.playerNumber,
                 this.playerTwoRef.getBoard(),
                 false,
                 false,
@@ -103,13 +103,13 @@ class GameUI {
         if (this.shipPlacementActive && this.playerOneRef.playerTurn) {
             currentPlayer = this.playerOneRef;
             const gameBoardPlayerOne = this.#createGameBoard(
-                1,
+                this.playerOneRef.playerNumber,
                 this.playerOneRef.getBoard(),
                 this.playerOneRef.getBoard().boardHidden,
                 this.shipPlacementActive
             );
             const gameBoardPlayerTwo = this.#createGameBoard(
-                1,
+                this.playerTwoRef.playerNumber,
                 this.playerTwoRef.getBoard(),
                 true,
                 false,
@@ -141,14 +141,14 @@ class GameUI {
         if (this.shipPlacementActive && this.playerTwoRef.playerTurn) {
             currentPlayer = this.playerTwoRef;
             const gameBoardPlayerTwo = this.#createGameBoard(
-                2,
+                this.playerTwoRef.playerNumber,
                 this.playerTwoRef.getBoard(),
                 this.playerTwoRef.getBoard().boardHidden,
                 this.shipPlacementActive
             );
             const gameBoardPlayerOne = this.#createGameBoard(
-                2,
-                this.playerTwoRef.getBoard(),
+                this.playerOneRef.playerNumber,
+                this.playerOneRef.getBoard(),
                 true,
                 false,
                 true
@@ -179,13 +179,13 @@ class GameUI {
             currentPlayer = this.playerOneRef;
             // generate game board
             const gameBoardPlayerTwo = this.#createGameBoard(
-                2,
+                this.playerTwoRef.playerNumber,
                 this.playerTwoRef.getBoard(),
                 this.playerTwoRef.getBoard().boardHidden,
                 this.shipPlacementActive
             );
             const gameBoardPlayerOne = this.#createGameBoard(
-                2,
+                this.playerOneRef.playerNumber,
                 this.playerOneRef.getBoard(),
                 true,
                 false,
@@ -225,13 +225,13 @@ class GameUI {
             }
             // generate game board
             const gameBoardPlayerOne = this.#createGameBoard(
-                1,
+                this.playerOneRef.playerNumber,
                 this.playerOneRef.getBoard(),
                 this.playerOneRef.getBoard().boardHidden,
                 this.shipPlacementActive
             );
             const gameBoardPlayerTwo = this.#createGameBoard(
-                2,
+                this.playerTwoRef.playerNumber,
                 this.playerTwoRef.getBoard(),
                 true,
                 false,
