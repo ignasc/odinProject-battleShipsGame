@@ -45,7 +45,7 @@ class GameUI {
         const controlButton = document.createElement("button");
         controlButton.setAttribute("id", "btn-control");
 
-        const footer = document.createElement("div");
+        const footer = document.createElement("h1");
         this.mainApp.appendChild(footer);
         this.mainApp.appendChild(gameBoardContainer);
 

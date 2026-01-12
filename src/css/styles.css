@@ -1,5 +1,19 @@
+:root {
+    --border-border: 1px solid grey;
+    --border-radius: 10px;
+    --box-shadow: 0px 5px 5px 1px grey;
+}
+
 body {
     font-family: "Roboto", sans-serif;
+}
+
+h1 {
+    font-size: 1.5rem;
+    padding: 2rem;
+    border: var(--border-border);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
 }
 
 #mainApp {
@@ -43,18 +57,24 @@ body {
 
 #game-boards {
     display: flex;
+    padding: 2rem;
 
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
     gap: 5rem;
+    border: var(--border-border);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
 }
 
 .game-board-player-container {
     display: flex;
+    align-self: baseline;
     padding: 1rem;
-    border: 1px solid grey;
-    border-radius: 10px;
+    border: var(--border-border);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
 
     flex-direction: column;
     gap: 2rem;
@@ -62,8 +82,14 @@ body {
 
 .score-board {
     margin: 0.5rem;
-    border: 1px solid green;
+    padding: 0.5rem;
+    border: var(--border-border);
+    border-radius: var(--border-radius);
     flex-basis: 6rem;
+}
+
+.score-board > ul, li {
+    margin: 0.5rem;
 }
 
 .position-ship-placing {
@@ -98,8 +124,8 @@ body {
 
 #player-one-menu,
 #player-two-menu {
-    border: 1px solid grey;
-    border-radius: 0.5rem;
+    border: var(--border-border);
+    border-radius: var(--border-radius);
     padding: 1rem;
     display: flex;
     flex-direction: column;
