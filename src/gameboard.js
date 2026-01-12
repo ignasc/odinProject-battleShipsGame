@@ -27,7 +27,7 @@ class GameBoard {
         }
 
         // this.shipsLeftToPlace = [1, 1, 1, 2, 2, 3];
-        this.shipsLeftToPlace = [2, 3];
+        this.shipsLeftToPlace = [1, 2, 3];
         this.boardHidden = false;
         this.playerNumber = parseInt(playerNumber);
     }

@@ -1,4 +1,5 @@
 import GameBoard from "./gameboard.js";
+import Ship from "./ship.js";
 
 class Player {
     constructor(isHuman = true, name = "Unknown", playerNumber) {
@@ -49,6 +50,7 @@ class Player {
         }
         // shuffle the array in semi-random order
         this.#shuffleArray(arrayOfMoves);
+
         while (arrayOfMoves.length > 0) {
             this.aiMoves.push(arrayOfMoves.pop());
         }
@@ -81,13 +83,82 @@ class Player {
         }
     }
 
+    #isShipLocationIllegal(coordX, coordY, targetX, targetY) {
+        if (
+            (coordX - 1 === targetX && coordY + 1 === targetY) ||
+            (coordX + 1 === targetX && coordY + 1 === targetY) ||
+            (coordX - 1 === targetX && coordY - 1 === targetY) ||
+            (coordX + 1 === targetX && coordY - 1 === targetY)
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    #isShipLocationPossible(coordX, coordY, targetX, targetY, shipRef = null) {
+        if (
+            (coordX - 1 === targetX && coordY === targetY) ||
+            (coordX + 1 === targetX && coordY === targetY) ||
+            (coordX === targetX && coordY - 1 === targetY) ||
+            (coordX === targetX && coordY + 1 === targetY)
+        ) {
+            // if ship is already sunk, then targeted position cannot have another instance of ship, otherwise target position may have another ship instance
+            if (shipRef instanceof Ship) {
+                return !shipRef.isSunk();
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
+    }
+
     executeComputerMove(enemyGameBoard = null) {
         if (!enemyGameBoard) {
             return;
         }
         const coordX = this.aiMoves[this.aiMoves.length - 1][0];
         const coordY = this.aiMoves.pop()[1];
-        enemyGameBoard.receiveAttack(coordX, coordY);
+        const positionContents = enemyGameBoard.getPositionContents(
+            coordX,
+            coordY
+        );
+        const result = enemyGameBoard.receiveAttack(coordX, coordY);
+        console.log(`PC attacks at ${coordX}:${coordY}`);
+
+        //analyse attack results based on difficulty level
+        if (
+            result === 1 &&
+            (this.aiLevel === "normal" || this.aiLevel === "hard")
+        ) {
+            //check if ship has been destroyed
+            // remove illegal attack positions and move potential ship attack positions to the front queue
+            const potentialShipPositions = [];
+            const remainingPositions = [];
+            this.aiMoves.forEach((position) => {
+                const positionIlegal = this.#isShipLocationIllegal(
+                    coordX,
+                    coordY,
+                    position[0],
+                    position[1]
+                );
+                const positionMayBeShip = this.#isShipLocationPossible(
+                    coordX,
+                    coordY,
+                    position[0],
+                    position[1],
+                    positionContents instanceof Ship ? positionContents : null
+                );
+
+                if (positionMayBeShip) {
+                    potentialShipPositions.push(position);
+                } else if (!positionIlegal) {
+                    remainingPositions.push(position);
+                }
+            });
+            this.aiMoves = [...remainingPositions, ...potentialShipPositions];
+        }
     }
 }
 
