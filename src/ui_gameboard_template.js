@@ -228,12 +228,13 @@ class GameUI {
         // Player TWO turn to attack
         if (this.gameplayActive && this.playerTwoRef.playerTurn) {
             currentPlayer = this.playerTwoRef;
-            // if player to is computer, execute its move
+            // if player two is computer, execute its move
             if (!currentPlayer.isHuman) {
                 currentPlayer.executeComputerMove(this.playerOneRef.getBoard());
                 currentPlayer.disableInteraction();
                 this.playerOneRef.enableInteraction();
                 this.updateUI();
+                return; //note: this return prevents double "restart game" button when computer opponent wins in the end game. Issue needs solving.
             }
             // generate game board
             const gameBoardPlayerOne = this.#createGameBoard(
@@ -277,8 +278,8 @@ class GameUI {
         // Button to progress through game preparation
         controlButton.addEventListener("click", (e) => {
             e.preventDefault();
-            // game winning conditions
-            if (this.gameEnded) {
+            // game winning conditions or mid game
+            if (this.gameEnded || this.gameplayActive) {
                 window.location.reload();
                 return;
             }
@@ -314,9 +315,9 @@ class GameUI {
         });
 
         controlButton.innerHTML = this.btnMessage;
-        if (!this.gameplayActive || this.gameEnded) {
-            this.mainApp.appendChild(controlButton);
-        }
+        // if (!this.gameplayActive || this.gameEnded) {
+        // }
+        this.mainApp.appendChild(controlButton);
     }
 
     #createGameBoard(
