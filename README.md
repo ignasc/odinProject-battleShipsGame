@@ -16,7 +16,7 @@ First working alpha version with core features implemented:
 
 - Two player game
 - Boards are automatically hidden so you can safely pass controls to other player.
-- Option to set second player to computer (difficulty selection available to select, but not implemented in gameplay)
+- Option to set second player to computer (difficulty selection available to select, but only easy and normal levels are implemented)
 - Show list of ships left to place (currently two ships available: 1 off length 3 and 1 off length 2)
 - Show list of ships remaining to be destroyed.
 
