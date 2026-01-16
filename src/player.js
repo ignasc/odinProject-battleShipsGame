@@ -6,6 +6,7 @@ class Player {
         this.isHuman = isHuman;
         this.name = name;
         this.gameBoard = new GameBoard(playerNumber);
+        this.gameBoard_NEW = this.gameBoard;
         this.playerTurn = true;
         this.playerNumber = playerNumber;
 
@@ -148,7 +149,7 @@ class Player {
                     coordY,
                     position[0],
                     position[1],
-                    positionContents instanceof Ship ? positionContents : null
+                    positionContents.getShipRef()
                 );
 
                 if (positionMayBeShip) {

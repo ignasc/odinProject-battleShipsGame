@@ -1,4 +1,5 @@
 import Ship from "./ship.js";
+import BoardSquare from "./ui_gameboard_single_square.js";
 
 const surroundingPositionOffsets = [
     [1, 1],
@@ -16,14 +17,20 @@ class GameBoard {
     constructor(playerNumber) {
         this.ships = [];
         this.board = [];
+        this.board_NEW = [];
         this.positionsFired = [];
         this.missedAttacks = 0;
         for (let i = 0; i < 10; i++) {
             const row = [];
+            const row_NEW = [];
             for (let j = 0; j < 10; j++) {
                 row.push("empty");
+                const newPosition = new BoardSquare();
+                newPosition.setCoords(i, j);
+                row_NEW.push(newPosition);
             }
             this.board.push(row);
+            this.board_NEW.push(row_NEW);
         }
 
         // this.shipsLeftToPlace = [1, 1, 1, 2, 2, 3];
@@ -37,7 +44,7 @@ class GameBoard {
     }
 
     getPositionContents(coordX, coordY) {
-        return this.board[coordY][coordX];
+        return this.board_NEW[coordY][coordX];
     }
 
     #setPositionContents(status, coordX, coordY) {
@@ -66,9 +73,7 @@ class GameBoard {
             const offsetX = coordX + posOffset[0];
             const offsetY = coordY + posOffset[1];
             if (offsetX >= 0 && offsetY >= 0 && offsetX < 10 && offsetY < 10) {
-                if (
-                    this.getPositionContents(offsetX, offsetY) instanceof Ship
-                ) {
+                if (this.getPositionContents(offsetX, offsetY).hasShip()) {
                     return false;
                 }
             }
@@ -116,10 +121,12 @@ class GameBoard {
         if (isRotated90) {
             for (let i = 0; i < shipLength; i++) {
                 this.board[shipYcoord + i][shipXcoord] = newShip;
+                this.board_NEW[shipYcoord + i][shipXcoord].setShipRef(newShip);
             }
         } else {
             for (let i = 0; i < shipLength; i++) {
                 this.board[shipYcoord][shipXcoord + i] = newShip;
+                this.board_NEW[shipYcoord][shipXcoord + i].setShipRef(newShip);
             }
         }
         this.shipsLeftToPlace.pop();
@@ -139,11 +146,21 @@ class GameBoard {
                 return 0;
             }
         }
-        this.positionsFired.push([shipYcoord, shipXcoord]);
-        const target = this.getPositionContents(shipXcoord, shipYcoord);
+        const target_NEW = this.getPositionContents(shipXcoord, shipYcoord);
+        if (!target_NEW.wasAttacked()) {
+            //remove this part of if statement
+            console.log(`Position was attacked.`);
+        } else if (target_NEW.wasAttacked()) {
+            console.log(`Position ALREADY attacked`);
+            return 0;
+        }
 
-        if (target instanceof Ship) {
-            target.hit();
+        this.positionsFired.push([shipYcoord, shipXcoord]);
+        target_NEW.setAttacked();
+
+        if (target_NEW.hasShip()) {
+            // target.hit();
+            target_NEW.getShipRef().hit();
             this.#setPositionContents("damaged", shipXcoord, shipYcoord);
             return 1;
         } else {
