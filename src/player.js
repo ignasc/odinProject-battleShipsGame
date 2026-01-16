@@ -6,7 +6,6 @@ class Player {
         this.isHuman = isHuman;
         this.name = name;
         this.gameBoard = new GameBoard(playerNumber);
-        this.gameBoard_NEW = this.gameBoard;
         this.playerTurn = true;
         this.playerNumber = playerNumber;
 
@@ -126,7 +125,6 @@ class Player {
             coordY
         );
         const result = enemyGameBoard.receiveAttack(coordX, coordY);
-        console.log(`PC attacks at ${coordX}:${coordY}`);
 
         //analyse attack results based on difficulty level
         if (

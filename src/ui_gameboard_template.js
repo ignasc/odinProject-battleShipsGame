@@ -3,8 +3,6 @@ Note: cloneNode() does not clone event listener, even with "true" parameter
 Instead, using a factory function to return a new DOM element
 */
 
-import Ship from "./ship.js";
-import BoardSquare from "./ui_gameboard_single_square.js";
 import scoreBoard from "./ui_score_board.js";
 
 class GameUI {
@@ -13,8 +11,6 @@ class GameUI {
         this.playerTwoRef = playerTwoRef;
         this.playerOneBoard = playerOneRef.getBoard();
         this.playerTwoBoard = playerTwoRef.getBoard();
-        this.playerOneBoard_NEW = playerOneRef.getBoard();
-        this.playerTwoBoard_NEW = playerTwoRef.getBoard();
         this.gameEngine = gameEngine;
         this.mainApp = document.getElementById("mainApp");
         this.playerOneTurn = true;
@@ -336,21 +332,23 @@ class GameUI {
         for (let coordX = 0; coordX < 10; coordX++) {
             for (let coordY = 0; coordY < 10; coordY++) {
                 const newPositionSquareElement = button.cloneNode(true);
-                const positionContents_NEW =
-                    gameBoardRef.getPositionContents(coordX, coordY);
+                const positionContents = gameBoardRef.getPositionContents(
+                    coordX,
+                    coordY
+                );
 
                 // position square indications
                 if (
-                    positionContents_NEW.wasAttacked() &&
-                    !positionContents_NEW.hasShip()
+                    positionContents.wasAttacked() &&
+                    !positionContents.hasShip()
                 ) {
                     newPositionSquareElement.setAttribute(
                         "class",
                         "position-attacked"
                     );
                 } else if (
-                    positionContents_NEW.wasAttacked() &&
-                    positionContents_NEW.hasShip()
+                    positionContents.wasAttacked() &&
+                    positionContents.hasShip()
                 ) {
                     newPositionSquareElement.setAttribute(
                         "class",
@@ -362,8 +360,8 @@ class GameUI {
                         "position-unknown"
                     );
                 } else if (
-                    !positionContents_NEW.wasAttacked() &&
-                    positionContents_NEW.hasShip()
+                    !positionContents.wasAttacked() &&
+                    positionContents.hasShip()
                 ) {
                     newPositionSquareElement.setAttribute(
                         "class",

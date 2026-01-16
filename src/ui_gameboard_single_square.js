@@ -9,22 +9,19 @@ class BoardSquare {
     }
 
     setShipRef(shipRef) {
-        // console.log("ship ref set");
         this.shipRef = shipRef;
     }
 
-    getShipRef(shipRef) {
+    getShipRef() {
         return this.shipRef;
     }
 
     setCoords(coordX, coordY) {
-        // console.log(`Position coordinates ${coordX}:${coordY} set`)
         this.coordX = coordX;
         this.coordY = coordY;
     }
 
     setAttacked() {
-        // console.log(`Position flagged as attacked`);
         this.attacked = true;
     }
 
