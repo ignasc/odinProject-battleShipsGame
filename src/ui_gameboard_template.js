@@ -3,14 +3,14 @@ Note: cloneNode() does not clone event listener, even with "true" parameter
 Instead, using a factory function to return a new DOM element
 */
 
-import Ship from "./ship.js";
-import singleSquare from "./ui_gameboard_single_square.js";
 import scoreBoard from "./ui_score_board.js";
 
 class GameUI {
     constructor(playerOneRef, playerTwoRef, gameEngine) {
         this.playerOneRef = playerOneRef;
         this.playerTwoRef = playerTwoRef;
+        this.playerOneBoard = playerOneRef.getBoard();
+        this.playerTwoBoard = playerTwoRef.getBoard();
         this.gameEngine = gameEngine;
         this.mainApp = document.getElementById("mainApp");
         this.playerOneTurn = true;
@@ -49,7 +49,7 @@ class GameUI {
         this.mainApp.appendChild(footer);
         this.mainApp.appendChild(gameBoardContainer);
 
-        if (this.playerOneRef.getBoard().boardHidden) {
+        if (this.playerOneBoard.boardHidden) {
             footer.innerHTML = "Player TWO turn";
         } else {
             footer.innerHTML = "Player ONE turn";
@@ -58,8 +58,8 @@ class GameUI {
         // Game winning conditions
         if (
             this.gameplayActive &&
-            (this.playerOneRef.getBoard().areAllShipsDestroyed() ||
-                this.playerTwoRef.getBoard().areAllShipsDestroyed())
+            (this.playerOneBoard.areAllShipsDestroyed() ||
+                this.playerTwoBoard.areAllShipsDestroyed())
         ) {
             this.gameplayActive = false;
             this.gameEnded = true;
@@ -68,7 +68,7 @@ class GameUI {
             this.playerOneRef.disableInteraction();
             this.playerTwoRef.disableInteraction();
 
-            if (this.playerOneRef.getBoard().areAllShipsDestroyed()) {
+            if (this.playerOneBoard.areAllShipsDestroyed()) {
                 winningPlayer = this.playerTwoRef;
             } else {
                 winningPlayer = this.playerOneRef;
@@ -76,32 +76,26 @@ class GameUI {
             // generate game board
             const gameBoardPlayerOne = this.#createGameBoard(
                 this.playerOneRef.playerNumber,
-                this.playerOneRef.getBoard(),
+                this.playerOneBoard,
                 false,
                 false,
                 false
             );
             const gameBoardPlayerTwo = this.#createGameBoard(
                 this.playerTwoRef.playerNumber,
-                this.playerTwoRef.getBoard(),
+                this.playerTwoBoard,
                 false,
                 false,
                 false
             );
             gameBoardPlayerOneContainer.appendChild(
-                scoreBoard(
-                    this.playerOneRef.getBoard(),
-                    this.shipPlacementActive
-                )
+                scoreBoard(this.playerOneBoard, this.shipPlacementActive)
             );
 
             gameBoardPlayerOneContainer.appendChild(gameBoardPlayerOne);
 
             gameBoardPlayerTwoContainer.appendChild(
-                scoreBoard(
-                    this.playerTwoRef.getBoard(),
-                    this.shipPlacementActive
-                )
+                scoreBoard(this.playerTwoBoard, this.shipPlacementActive)
             );
 
             gameBoardPlayerTwoContainer.appendChild(gameBoardPlayerTwo);
@@ -115,31 +109,25 @@ class GameUI {
             currentPlayer = this.playerOneRef;
             const gameBoardPlayerOne = this.#createGameBoard(
                 this.playerOneRef.playerNumber,
-                this.playerOneRef.getBoard(),
-                this.playerOneRef.getBoard().boardHidden,
+                this.playerOneBoard,
+                this.playerOneBoard.boardHidden,
                 this.shipPlacementActive
             );
             const gameBoardPlayerTwo = this.#createGameBoard(
                 this.playerTwoRef.playerNumber,
-                this.playerTwoRef.getBoard(),
+                this.playerTwoBoard,
                 true,
                 false,
                 true
             );
             gameBoardPlayerOneContainer.appendChild(
-                scoreBoard(
-                    this.playerOneRef.getBoard(),
-                    this.shipPlacementActive
-                )
+                scoreBoard(this.playerOneBoard, this.shipPlacementActive)
             );
 
             gameBoardPlayerOneContainer.appendChild(gameBoardPlayerOne);
 
             gameBoardPlayerTwoContainer.appendChild(
-                scoreBoard(
-                    this.playerTwoRef.getBoard(),
-                    this.shipPlacementActive
-                )
+                scoreBoard(this.playerTwoBoard, this.shipPlacementActive)
             );
 
             gameBoardPlayerTwoContainer.appendChild(gameBoardPlayerTwo);
@@ -153,31 +141,25 @@ class GameUI {
             currentPlayer = this.playerTwoRef;
             const gameBoardPlayerTwo = this.#createGameBoard(
                 this.playerTwoRef.playerNumber,
-                this.playerTwoRef.getBoard(),
-                this.playerTwoRef.getBoard().boardHidden,
+                this.playerTwoBoard,
+                this.playerTwoBoard.boardHidden,
                 this.shipPlacementActive
             );
             const gameBoardPlayerOne = this.#createGameBoard(
                 this.playerOneRef.playerNumber,
-                this.playerOneRef.getBoard(),
+                this.playerOneBoard,
                 true,
                 false,
                 true
             );
             gameBoardPlayerOneContainer.appendChild(
-                scoreBoard(
-                    this.playerOneRef.getBoard(),
-                    this.shipPlacementActive
-                )
+                scoreBoard(this.playerOneBoard, this.shipPlacementActive)
             );
 
             gameBoardPlayerOneContainer.appendChild(gameBoardPlayerOne);
 
             gameBoardPlayerTwoContainer.appendChild(
-                scoreBoard(
-                    this.playerTwoRef.getBoard(),
-                    this.shipPlacementActive
-                )
+                scoreBoard(this.playerTwoBoard, this.shipPlacementActive)
             );
 
             gameBoardPlayerTwoContainer.appendChild(gameBoardPlayerTwo);
@@ -192,31 +174,25 @@ class GameUI {
             // generate game board
             const gameBoardPlayerTwo = this.#createGameBoard(
                 this.playerTwoRef.playerNumber,
-                this.playerTwoRef.getBoard(),
-                this.playerTwoRef.getBoard().boardHidden,
+                this.playerTwoBoard,
+                this.playerTwoBoard.boardHidden,
                 this.shipPlacementActive
             );
             const gameBoardPlayerOne = this.#createGameBoard(
                 this.playerOneRef.playerNumber,
-                this.playerOneRef.getBoard(),
+                this.playerOneBoard,
                 true,
                 false,
                 true
             );
             gameBoardPlayerOneContainer.appendChild(
-                scoreBoard(
-                    this.playerOneRef.getBoard(),
-                    this.shipPlacementActive
-                )
+                scoreBoard(this.playerOneBoard, this.shipPlacementActive)
             );
 
             gameBoardPlayerOneContainer.appendChild(gameBoardPlayerOne);
 
             gameBoardPlayerTwoContainer.appendChild(
-                scoreBoard(
-                    this.playerTwoRef.getBoard(),
-                    this.shipPlacementActive
-                )
+                scoreBoard(this.playerTwoBoard, this.shipPlacementActive)
             );
 
             gameBoardPlayerTwoContainer.appendChild(gameBoardPlayerTwo);
@@ -230,7 +206,7 @@ class GameUI {
             currentPlayer = this.playerTwoRef;
             // if player two is computer, execute its move
             if (!currentPlayer.isHuman) {
-                currentPlayer.executeComputerMove(this.playerOneRef.getBoard());
+                currentPlayer.executeComputerMove(this.playerOneBoard);
                 currentPlayer.disableInteraction();
                 this.playerOneRef.enableInteraction();
                 this.updateUI();
@@ -239,31 +215,25 @@ class GameUI {
             // generate game board
             const gameBoardPlayerOne = this.#createGameBoard(
                 this.playerOneRef.playerNumber,
-                this.playerOneRef.getBoard(),
-                this.playerOneRef.getBoard().boardHidden,
+                this.playerOneBoard,
+                this.playerOneBoard.boardHidden,
                 this.shipPlacementActive
             );
             const gameBoardPlayerTwo = this.#createGameBoard(
                 this.playerTwoRef.playerNumber,
-                this.playerTwoRef.getBoard(),
+                this.playerTwoBoard,
                 true,
                 false,
                 true
             );
             gameBoardPlayerOneContainer.appendChild(
-                scoreBoard(
-                    this.playerOneRef.getBoard(),
-                    this.shipPlacementActive
-                )
+                scoreBoard(this.playerOneBoard, this.shipPlacementActive)
             );
 
             gameBoardPlayerOneContainer.appendChild(gameBoardPlayerOne);
 
             gameBoardPlayerTwoContainer.appendChild(
-                scoreBoard(
-                    this.playerTwoRef.getBoard(),
-                    this.shipPlacementActive
-                )
+                scoreBoard(this.playerTwoBoard, this.shipPlacementActive)
             );
 
             gameBoardPlayerTwoContainer.appendChild(gameBoardPlayerTwo);
@@ -287,13 +257,13 @@ class GameUI {
             // switch to player two ship placement
             if (
                 this.shipPlacementActive &&
-                this.playerOneRef.getBoard().allShipsPlaced() &&
+                this.playerOneBoard.allShipsPlaced() &&
                 this.playerOneRef.playerTurn
             ) {
                 this.playerOneRef.disableInteraction();
                 this.playerTwoRef.enableInteraction();
-                this.playerOneRef.getBoard().toggleBoard();
-                this.playerTwoRef.getBoard().toggleBoard();
+                this.playerOneBoard.toggleBoard();
+                this.playerTwoBoard.toggleBoard();
                 this.updateUI();
             }
 
@@ -301,14 +271,14 @@ class GameUI {
             if (
                 this.shipPlacementActive &&
                 !this.gameplayActive &&
-                this.playerOneRef.getBoard().allShipsPlaced() &&
-                this.playerTwoRef.getBoard().allShipsPlaced()
+                this.playerOneBoard.allShipsPlaced() &&
+                this.playerTwoBoard.allShipsPlaced()
             ) {
                 this.shipPlacementActive = false;
                 this.gameplayActive = true;
                 this.playerOneRef.enableInteraction();
                 this.playerTwoRef.disableInteraction();
-                this.playerTwoRef.getBoard().toggleBoard();
+                this.playerTwoBoard.toggleBoard();
                 this.btnMessage = "Restart Game";
                 this.updateUI();
             }
@@ -333,6 +303,9 @@ class GameUI {
         } else {
             gameBoardElement.setAttribute("class", "gameBoard");
         }
+        const button = document.createElement("button");
+        button.setAttribute("class", "single-square");
+
         let shipIsRotated = false;
 
         let currentPlayer = null;
@@ -358,19 +331,25 @@ class GameUI {
         // fill boards with position squares
         for (let coordX = 0; coordX < 10; coordX++) {
             for (let coordY = 0; coordY < 10; coordY++) {
-                const newPositionSquareElement = singleSquare.cloneNode(true);
+                const newPositionSquareElement = button.cloneNode(true);
                 const positionContents = gameBoardRef.getPositionContents(
                     coordX,
                     coordY
                 );
 
                 // position square indications
-                if (positionContents === "attacked") {
+                if (
+                    positionContents.wasAttacked() &&
+                    !positionContents.hasShip()
+                ) {
                     newPositionSquareElement.setAttribute(
                         "class",
                         "position-attacked"
                     );
-                } else if (positionContents === "damaged") {
+                } else if (
+                    positionContents.wasAttacked() &&
+                    positionContents.hasShip()
+                ) {
                     newPositionSquareElement.setAttribute(
                         "class",
                         "position-ship-damaged"
@@ -380,7 +359,10 @@ class GameUI {
                         "class",
                         "position-unknown"
                     );
-                } else if (positionContents instanceof Ship) {
+                } else if (
+                    !positionContents.wasAttacked() &&
+                    positionContents.hasShip()
+                ) {
                     newPositionSquareElement.setAttribute(
                         "class",
                         "position-ship-healthy"

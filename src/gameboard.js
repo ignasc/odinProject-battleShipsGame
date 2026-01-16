@@ -1,4 +1,5 @@
 import Ship from "./ship.js";
+import BoardSquare from "./ui_gameboard_single_square.js";
 
 const surroundingPositionOffsets = [
     [1, 1],
@@ -21,7 +22,9 @@ class GameBoard {
         for (let i = 0; i < 10; i++) {
             const row = [];
             for (let j = 0; j < 10; j++) {
-                row.push("empty");
+                const newPosition = new BoardSquare();
+                newPosition.setCoords(i, j);
+                row.push(newPosition);
             }
             this.board.push(row);
         }
@@ -38,14 +41,6 @@ class GameBoard {
 
     getPositionContents(coordX, coordY) {
         return this.board[coordY][coordX];
-    }
-
-    #setPositionContents(status, coordX, coordY) {
-        this.board[coordY][coordX] = status;
-    }
-
-    getBoardContents() {
-        return this.board;
     }
 
     getPlayerNumber() {
@@ -66,9 +61,7 @@ class GameBoard {
             const offsetX = coordX + posOffset[0];
             const offsetY = coordY + posOffset[1];
             if (offsetX >= 0 && offsetY >= 0 && offsetX < 10 && offsetY < 10) {
-                if (
-                    this.getPositionContents(offsetX, offsetY) instanceof Ship
-                ) {
+                if (this.getPositionContents(offsetX, offsetY).hasShip()) {
                     return false;
                 }
             }
@@ -115,11 +108,11 @@ class GameBoard {
         this.ships.push(newShip);
         if (isRotated90) {
             for (let i = 0; i < shipLength; i++) {
-                this.board[shipYcoord + i][shipXcoord] = newShip;
+                this.board[shipYcoord + i][shipXcoord].setShipRef(newShip);
             }
         } else {
             for (let i = 0; i < shipLength; i++) {
-                this.board[shipYcoord][shipXcoord + i] = newShip;
+                this.board[shipYcoord][shipXcoord + i].setShipRef(newShip);
             }
         }
         this.shipsLeftToPlace.pop();
@@ -132,23 +125,21 @@ class GameBoard {
         //  -1 = missed
         //  0 = already fired before
         //  1 = hit
-        //check if position was already fired at
-        for (let i = 0; i < this.positionsFired.length; i++) {
-            const position = this.positionsFired[i];
-            if (position[1] === shipXcoord && position[0] === shipYcoord) {
-                return 0;
-            }
-        }
-        this.positionsFired.push([shipYcoord, shipXcoord]);
         const target = this.getPositionContents(shipXcoord, shipYcoord);
 
-        if (target instanceof Ship) {
-            target.hit();
-            this.#setPositionContents("damaged", shipXcoord, shipYcoord);
+        //check if position was already fired at
+        if (target.wasAttacked()) {
+            return 0;
+        }
+
+        this.positionsFired.push([shipYcoord, shipXcoord]);
+        target.setAttacked();
+
+        if (target.hasShip()) {
+            target.getShipRef().hit();
             return 1;
         } else {
             this.missedAttacks++;
-            this.#setPositionContents("attacked", shipXcoord, shipYcoord);
             return -1;
         }
     }

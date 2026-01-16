@@ -125,7 +125,6 @@ class Player {
             coordY
         );
         const result = enemyGameBoard.receiveAttack(coordX, coordY);
-        console.log(`PC attacks at ${coordX}:${coordY}`);
 
         //analyse attack results based on difficulty level
         if (
@@ -148,7 +147,7 @@ class Player {
                     coordY,
                     position[0],
                     position[1],
-                    positionContents instanceof Ship ? positionContents : null
+                    positionContents.getShipRef()
                 );
 
                 if (positionMayBeShip) {
