@@ -38,6 +38,11 @@ h1 {
     justify-items: stretch;
 }
 
+.gameBoard > button > img {
+    /* object-fit: scale-down; */
+    max-width: 100%;
+}
+
 .gameBoard-small {
     border: 1px solid black;
     height: 15rem;
@@ -49,10 +54,6 @@ h1 {
     grid-auto-flow: row;
     align-items: stretch;
     justify-items: stretch;
-}
-
-.gameBoard-green {
-    /* border: 5px solid green; */
 }
 
 #game-boards {
@@ -132,4 +133,97 @@ li {
     flex-direction: column;
 
     gap: 0.5rem;
+}
+
+.shipSpriteMid {
+    background-image: url("../img/ship_mid.png");
+    background-size: 100%;
+}
+
+.shipSpriteMidRotated {
+    background-image: url("../img/ship_mid.png");
+    background-size: 100%;
+    transform: rotate(-90deg);
+}
+
+.shipSpriteFront {
+    background-image: url("../img/ship_front.png");
+    background-size: 100%;
+}
+
+.shipSpriteFrontRotated {
+    background-image: url("../img/ship_front.png");
+    background-size: 100%;
+    transform: rotate(-90deg);
+}
+
+.shipSpriteEnd {
+    background-image: url("../img/ship_end.png");
+    background-size: 100%;
+}
+
+.shipSpriteEndRotated {
+    background-image: url("../img/ship_end.png");
+    background-size: 100%;
+    transform: rotate(-90deg);
+}
+
+.shipSpriteSingle {
+    background-image: url("../img/ship_single.png");
+    background-size: 100%;
+}
+
+.shipSpriteDamaged {
+    background-image: url("../img/ship_damaged.png");
+    background-size: 100%;
+}
+
+.shipSpriteSingleRotated {
+    background-image: url("../img/ship_single.png");
+    background-size: 100%;
+    transform: rotate(-90deg);
+}
+
+.shipSpriteMidDestroyed {
+    background-image: url("../img/ship_destroyed_mid.png");
+    background-size: 100%;
+}
+
+.shipSpriteMidDestroyedRotated {
+    background-image: url("../img/ship_destroyed_mid.png");
+    background-size: 100%;
+    transform: rotate(-90deg);
+}
+
+.shipSpriteFrontDestroyed {
+    background-image: url("../img/ship_destroyed_front.png");
+    background-size: 100%;
+}
+
+.shipSpriteFrontDestroyedRotated {
+    background-image: url("../img/ship_destroyed_front.png");
+    background-size: 100%;
+    transform: rotate(-90deg);
+}
+
+.shipSpriteEndDestroyed {
+    background-image: url("../img/ship_destroyed_end.png");
+    background-size: 100%;
+}
+
+.shipSpriteEndDestroyedRotated {
+    background-image: url("../img/ship_destroyed_end.png");
+    background-size: 100%;
+    transform: rotate(-90deg);
+}
+
+.shipSpriteSingleDestroyed {
+    background-image: url("../img/ship_destroyed_single.png");
+    background-size: 100%;
+}
+
+.shipSpriteSingleDestroyedRotated {
+    background-image: url("../img/ship_destroyed_single.png");
+    background-size: 100%;
+    transform: rotate(-90deg);
 }
