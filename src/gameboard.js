@@ -109,10 +109,12 @@ class GameBoard {
         if (isRotated90) {
             for (let i = 0; i < shipLength; i++) {
                 this.board[shipYcoord + i][shipXcoord].setShipRef(newShip);
+                newShip.storePosition(shipXcoord, shipYcoord + i);
             }
         } else {
             for (let i = 0; i < shipLength; i++) {
                 this.board[shipYcoord][shipXcoord + i].setShipRef(newShip);
+                newShip.storePosition(shipXcoord + i, shipYcoord);
             }
         }
         this.shipsLeftToPlace.pop();

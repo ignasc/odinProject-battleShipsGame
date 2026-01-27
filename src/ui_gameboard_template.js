@@ -3,6 +3,7 @@ Note: cloneNode() does not clone event listener, even with "true" parameter
 Instead, using a factory function to return a new DOM element
 */
 
+import Ship from "./ship.js";
 import scoreBoard from "./ui_score_board.js";
 
 class GameUI {
@@ -315,17 +316,6 @@ class GameUI {
             currentPlayer = this.playerOneRef;
         }
 
-        // active board highlight
-        if (shipPlacement) {
-            if (!conceal) {
-                gameBoardElement.classList.toggle("gameBoard-green");
-            }
-        } else {
-            if (conceal) {
-                gameBoardElement.classList.toggle("gameBoard-green");
-            }
-        }
-
         gameBoardElement.setAttribute("id", "gameBoard" + playerNumber);
 
         // fill boards with position squares
@@ -352,7 +342,12 @@ class GameUI {
                 ) {
                     newPositionSquareElement.setAttribute(
                         "class",
-                        "position-ship-damaged"
+                        returnShipSpriteClass(
+                            coordX,
+                            coordY,
+                            positionContents.getShipRef().isRotated(),
+                            positionContents.getShipRef()
+                        )
                     );
                 } else if (conceal) {
                     newPositionSquareElement.setAttribute(
@@ -363,9 +358,18 @@ class GameUI {
                     !positionContents.wasAttacked() &&
                     positionContents.hasShip()
                 ) {
-                    newPositionSquareElement.setAttribute(
-                        "class",
-                        "position-ship-healthy"
+                    // newPositionSquareElement.setAttribute(
+                    //     "class",
+                    //     "position-ship-healthy"
+                    // );
+                    // set correct sprite for each ship position square
+                    newPositionSquareElement.classList.toggle(
+                        returnShipSpriteClass(
+                            coordX,
+                            coordY,
+                            positionContents.getShipRef().isRotated(),
+                            positionContents.getShipRef()
+                        )
                     );
                 } else {
                     newPositionSquareElement.setAttribute(
@@ -492,4 +496,59 @@ class GameUI {
     }
 }
 
+function returnShipSpriteClass(coordX, coordY, shipIsRotated, shipRef) {
+    if (shipRef.isDamaged()) {
+        return "shipSpriteDamaged";
+    }
+
+    if (shipRef.getLength() === 1) {
+        if (shipRef.isSunk()) {
+            if (shipIsRotated) {
+                return "shipSpriteSingleDestroyedRotated";
+            } else {
+                return "shipSpriteSingleDestroyed";
+            }
+        } else {
+            if (shipIsRotated) {
+                return "shipSpriteSingleRotated";
+            } else {
+                return "shipSpriteSingle";
+            }
+        }
+    }
+    // check if current position is front or end of the ship
+    if (
+        shipRef.getShipPositions()[0][0] === coordX &&
+        shipRef.getShipPositions()[0][1] === coordY
+    ) {
+        if (shipRef.isSunk()) {
+            return shipIsRotated
+                ? "shipSpriteFrontDestroyedRotated"
+                : "shipSpriteFrontDestroyed";
+        } else {
+            return shipIsRotated ? "shipSpriteFrontRotated" : "shipSpriteFront";
+        }
+    } else if (
+        shipRef.getShipPositions()[shipRef.getShipPositions().length - 1][0] ===
+            coordX &&
+        shipRef.getShipPositions()[shipRef.getShipPositions().length - 1][1] ===
+            coordY
+    ) {
+        if (shipRef.isSunk()) {
+            return shipIsRotated
+                ? "shipSpriteEndDestroyedRotated"
+                : "shipSpriteEndDestroyed";
+        } else {
+            return shipIsRotated ? "shipSpriteEndRotated" : "shipSpriteEnd";
+        }
+    } else {
+        if (shipRef.isSunk()) {
+            return shipIsRotated
+                ? "shipSpriteMidDestroyedRotated"
+                : "shipSpriteMidDestroyed";
+        } else {
+            return shipIsRotated ? "shipSpriteMidRotated" : "shipSpriteMid";
+        }
+    }
+}
 export default GameUI;
