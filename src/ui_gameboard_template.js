@@ -332,16 +332,14 @@ class GameUI {
                     positionContents.wasAttacked() &&
                     !positionContents.hasShip()
                 ) {
-                    newPositionSquareElement.setAttribute(
-                        "class",
+                    newPositionSquareElement.classList.toggle(
                         "position-attacked"
                     );
                 } else if (
                     positionContents.wasAttacked() &&
                     positionContents.hasShip()
                 ) {
-                    newPositionSquareElement.setAttribute(
-                        "class",
+                    newPositionSquareElement.classList.toggle(
                         returnShipSpriteClass(
                             coordX,
                             coordY,
@@ -349,9 +347,14 @@ class GameUI {
                             positionContents.getShipRef()
                         )
                     );
+                    //if ship is destroyed, remove borders to display destroyed ship
+                    if (positionContents.getShipRef().isSunk()) {
+                        newPositionSquareElement.classList.toggle(
+                            "btn-border-hide"
+                        );
+                    }
                 } else if (conceal) {
-                    newPositionSquareElement.setAttribute(
-                        "class",
+                    newPositionSquareElement.classList.toggle(
                         "position-unknown"
                     );
                 } else if (
@@ -364,6 +367,9 @@ class GameUI {
                     // );
                     // set correct sprite for each ship position square
                     newPositionSquareElement.classList.toggle(
+                        "btn-border-hide"
+                    );
+                    newPositionSquareElement.classList.toggle(
                         returnShipSpriteClass(
                             coordX,
                             coordY,
@@ -372,8 +378,7 @@ class GameUI {
                         )
                     );
                 } else {
-                    newPositionSquareElement.setAttribute(
-                        "class",
+                    newPositionSquareElement.classList.toggle(
                         "position-unknown"
                     );
                 }

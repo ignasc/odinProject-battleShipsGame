@@ -6,10 +6,14 @@ class Ship {
         this.hits = 0;
         this.isRotated90 = isRotated90;
         this.shipPositions = [];
+        this.playerOwner = playerOwner;
+    }
+
+    getPlayerNumber() {
+        return this.playerOwner;
     }
 
     storePosition(coordX, coordY) {
-        console.log(`Storing ship position ${coordX}:${coordY}`);
         this.shipPositions.push([coordX, coordY]);
     }
 

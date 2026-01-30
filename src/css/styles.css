@@ -43,6 +43,14 @@ h1 {
     max-width: 100%;
 }
 
+.gameBoard > button {
+    border: 1px solid grey;
+}
+
+.btn-border-hide {
+    border-style: none !important;
+}
+
 .gameBoard-small {
     border: 1px solid black;
     height: 15rem;
