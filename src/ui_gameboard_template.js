@@ -30,6 +30,8 @@ class GameUI {
         const gameBoardContainer = document.createElement("div");
         gameBoardContainer.setAttribute("id", "game-boards");
 
+        const gameBoardContainerTitle = document.createElement("h2");
+
         const gameBoardPlayerOneContainer = document.createElement("div");
         gameBoardPlayerOneContainer.setAttribute(
             "class",
@@ -40,6 +42,14 @@ class GameUI {
             "class",
             "game-board-player-container"
         );
+
+        const playerOneTitle = gameBoardContainerTitle.cloneNode();
+        playerOneTitle.innerHTML = `Player ${this.playerOneRef.name}'s board`;
+        gameBoardPlayerOneContainer.appendChild(playerOneTitle);
+
+        const playerTwoTitle = gameBoardContainerTitle.cloneNode();
+        playerTwoTitle.innerHTML = `Player ${this.playerTwoRef.name}'s board`;
+        gameBoardPlayerTwoContainer.appendChild(playerTwoTitle);
 
         let currentPlayer = null;
 
