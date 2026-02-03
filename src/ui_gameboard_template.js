@@ -296,8 +296,6 @@ class GameUI {
         });
 
         controlButton.innerHTML = this.btnMessage;
-        // if (!this.gameplayActive || this.gameEnded) {
-        // }
         this.mainApp.appendChild(controlButton);
     }
 
@@ -372,11 +370,6 @@ class GameUI {
                     !positionContents.wasAttacked() &&
                     positionContents.hasShip()
                 ) {
-                    // newPositionSquareElement.setAttribute(
-                    //     "class",
-                    //     "position-ship-healthy"
-                    // );
-                    // set correct sprite for each ship position square
                     newPositionSquareElement.classList.toggle(
                         "btn-border-hide"
                     );
