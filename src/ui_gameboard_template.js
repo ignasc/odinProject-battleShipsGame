@@ -354,7 +354,8 @@ class GameUI {
                             coordX,
                             coordY,
                             positionContents.getShipRef().isRotated(),
-                            positionContents.getShipRef()
+                            positionContents.getShipRef(),
+                            this.gameEnded
                         )
                     );
                     //if ship is destroyed, remove borders to display destroyed ship
@@ -384,7 +385,8 @@ class GameUI {
                             coordX,
                             coordY,
                             positionContents.getShipRef().isRotated(),
-                            positionContents.getShipRef()
+                            positionContents.getShipRef(),
+                            this.gameEnded
                         )
                     );
                 } else {
@@ -504,6 +506,11 @@ class GameUI {
                     );
                 }
 
+                // if game ended, always remove borders from positions with ships
+                if (positionContents.hasShip() && this.gameEnded) {
+                    newPositionSquareElement.classList.add(`btn-border-hide`);
+                }
+
                 gameBoardElement.appendChild(newPositionSquareElement);
             }
         }
@@ -511,8 +518,14 @@ class GameUI {
     }
 }
 
-function returnShipSpriteClass(coordX, coordY, shipIsRotated, shipRef) {
-    if (shipRef.isDamaged()) {
+function returnShipSpriteClass(
+    coordX,
+    coordY,
+    shipIsRotated,
+    shipRef,
+    gameEnded = false
+) {
+    if (shipRef.isDamaged() && !gameEnded) {
         return "shipSpriteDamaged";
     }
 
@@ -533,28 +546,46 @@ function returnShipSpriteClass(coordX, coordY, shipIsRotated, shipRef) {
     }
     // check if current position is front or end of the ship
     if (
-        shipRef.getShipPositions()[0][0] === coordX &&
-        shipRef.getShipPositions()[0][1] === coordY
+        shipRef.getShipPositions()[0]["coords"][0] === coordX &&
+        shipRef.getShipPositions()[0]["coords"][1] === coordY
     ) {
         if (shipRef.isSunk()) {
             return shipIsRotated
                 ? "shipSpriteFrontDestroyedRotated"
                 : "shipSpriteFrontDestroyed";
         } else {
-            return shipIsRotated ? "shipSpriteFrontRotated" : "shipSpriteFront";
+            /*if damaged: return destroyed sprite*/
+            if (shipRef.getShipPartAt(coordX, coordY)["damaged"]) {
+                return shipIsRotated
+                    ? "shipSpriteFrontDestroyedRotated"
+                    : "shipSpriteFrontDestroyed";
+            } else {
+                return shipIsRotated
+                    ? "shipSpriteFrontRotated"
+                    : "shipSpriteFront";
+            }
         }
     } else if (
-        shipRef.getShipPositions()[shipRef.getShipPositions().length - 1][0] ===
-            coordX &&
-        shipRef.getShipPositions()[shipRef.getShipPositions().length - 1][1] ===
-            coordY
+        shipRef.getShipPositions()[shipRef.getShipPositions().length - 1][
+            "coords"
+        ][0] === coordX &&
+        shipRef.getShipPositions()[shipRef.getShipPositions().length - 1][
+            "coords"
+        ][1] === coordY
     ) {
         if (shipRef.isSunk()) {
             return shipIsRotated
                 ? "shipSpriteEndDestroyedRotated"
                 : "shipSpriteEndDestroyed";
         } else {
-            return shipIsRotated ? "shipSpriteEndRotated" : "shipSpriteEnd";
+            /*if damaged: return destroyed sprite*/
+            if (shipRef.getShipPartAt(coordX, coordY)["damaged"]) {
+                return shipIsRotated
+                    ? "shipSpriteEndDestroyedRotated"
+                    : "shipSpriteEndDestroyed";
+            } else {
+                return shipIsRotated ? "shipSpriteEndRotated" : "shipSpriteEnd";
+            }
         }
     } else {
         if (shipRef.isSunk()) {
@@ -562,7 +593,14 @@ function returnShipSpriteClass(coordX, coordY, shipIsRotated, shipRef) {
                 ? "shipSpriteMidDestroyedRotated"
                 : "shipSpriteMidDestroyed";
         } else {
-            return shipIsRotated ? "shipSpriteMidRotated" : "shipSpriteMid";
+            /*if damaged: return destroyed sprite*/
+            if (shipRef.getShipPartAt(coordX, coordY)["damaged"]) {
+                return shipIsRotated
+                    ? "shipSpriteMidDestroyedRotated"
+                    : "shipSpriteMidDestroyed";
+            } else {
+                return shipIsRotated ? "shipSpriteMidRotated" : "shipSpriteMid";
+            }
         }
     }
 }

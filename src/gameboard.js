@@ -138,6 +138,7 @@ class GameBoard {
         target.setAttacked();
 
         if (target.hasShip()) {
+            target.getShipRef().setPartDamaged(shipXcoord, shipYcoord);
             target.getShipRef().hit();
             return 1;
         } else {
