@@ -6,11 +6,40 @@ class Ship {
         this.hits = 0;
         this.isRotated90 = isRotated90;
         this.shipPositions = [];
+        this.playerOwner = playerOwner;
+    }
+
+    getPlayerNumber() {
+        return this.playerOwner;
     }
 
     storePosition(coordX, coordY) {
-        console.log(`Storing ship position ${coordX}:${coordY}`);
-        this.shipPositions.push([coordX, coordY]);
+        this.shipPositions.push({
+            coords: [coordX, coordY],
+            damaged: false,
+        });
+    }
+    setPartDamaged(coordX = null, coordY = null) {
+        for (let i = 0; i < this.shipPositions.length; i++) {
+            const shipPart = this.shipPositions[i];
+            if (
+                shipPart["coords"][0] === coordX &&
+                shipPart["coords"][1] === coordY
+            ) {
+                shipPart["damaged"] = true;
+            }
+        }
+    }
+    getShipPartAt(coordX, coordY) {
+        for (let i = 0; i < this.shipPositions.length; i++) {
+            const shipPart = this.shipPositions[i];
+            if (
+                shipPart["coords"][0] === coordX &&
+                shipPart["coords"][1] === coordY
+            ) {
+                return shipPart;
+            }
+        }
     }
 
     getShipPositions() {

@@ -37,7 +37,13 @@ class Player {
     }
 
     placeShip(length, coordX, coordY, isRotated90) {
-        this.gameBoard.spawnShip(length, coordX, coordY, isRotated90);
+        this.gameBoard.spawnShip(
+            length,
+            coordX,
+            coordY,
+            isRotated90,
+            this.playerNumber
+        );
     }
 
     #setupComputerAI() {
