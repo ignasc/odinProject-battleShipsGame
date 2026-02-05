@@ -72,19 +72,21 @@ const radioButtonNormalLabel = label.cloneNode();
 radioButtonNormalLabel.setAttribute("for", "computer-normal");
 radioButtonNormalLabel.innerHTML = "Normal";
 
-const radioButtonHard = inputElement.cloneNode();
-radioButtonHard.setAttribute("type", "radio");
-radioButtonHard.setAttribute("id", "computer-hard");
-radioButtonHard.setAttribute("name", "computer-level");
-radioButtonHard.setAttribute("value", "hard");
-const radioButtonHardLabel = label.cloneNode();
-radioButtonHardLabel.setAttribute("for", "computer-hard");
-radioButtonHardLabel.innerHTML = "Hard";
+// const radioButtonHard = inputElement.cloneNode();
+// radioButtonHard.setAttribute("type", "radio");
+// radioButtonHard.setAttribute("id", "computer-hard");
+// radioButtonHard.setAttribute("name", "computer-level");
+// radioButtonHard.setAttribute("value", "hard");
+// const radioButtonHardLabel = label.cloneNode();
+// radioButtonHardLabel.setAttribute("for", "computer-hard");
+// radioButtonHardLabel.innerHTML = "Hard";
 
 //Menu splits
 const playerOneMenu = divElement.cloneNode();
 playerOneMenu.setAttribute("id", "player-one-menu");
+playerOneMenu.classList.add("playerMenu")
 const playerTwoMenu = divElement.cloneNode();
+playerTwoMenu.classList.add("playerMenu")
 playerTwoMenu.setAttribute("id", "player-one-menu");
 
 playerOneMenu.appendChild(playerOneNameLabel);
@@ -96,12 +98,20 @@ playerTwoMenu.appendChild(playerTwoComputerOption);
 playerTwoMenu.appendChild(playerTwoNameLabel);
 playerTwoMenu.appendChild(playerTwoName);
 
-computerLevelWrapper.appendChild(radioButtonEasyLabel);
-computerLevelWrapper.appendChild(radioButtonEasy);
-computerLevelWrapper.appendChild(radioButtonNormalLabel);
-computerLevelWrapper.appendChild(radioButtonNormal);
-computerLevelWrapper.appendChild(radioButtonHardLabel);
-computerLevelWrapper.appendChild(radioButtonHard);
+const easyLevelContainer = document.createElement("div");
+const normalLevelContainer = document.createElement("div");
+// const hardLevelContainer = document.createElement("div");
+
+easyLevelContainer.appendChild(radioButtonEasyLabel);
+easyLevelContainer.appendChild(radioButtonEasy);
+normalLevelContainer.appendChild(radioButtonNormalLabel);
+normalLevelContainer.appendChild(radioButtonNormal);
+// hardLevelContainer.appendChild(radioButtonHardLabel)
+// hardLevelContainer.appendChild(radioButtonHard)
+
+computerLevelWrapper.appendChild(easyLevelContainer);
+computerLevelWrapper.appendChild(normalLevelContainer);
+// computerLevelWrapper.appendChild(hardLevelContainer);
 playerTwoMenu.appendChild(computerLevelWrapper);
 
 startMenu.appendChild(playerOneMenu);

@@ -44,5 +44,5 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("mainApp").appendChild(btnStartGame);
 
     //debug: trigger start button immeditely
-    btnStartGame.click();
+    // btnStartGame.click();
 });
