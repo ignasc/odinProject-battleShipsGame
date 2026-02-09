@@ -10,22 +10,18 @@ The game is currently in development. I have reached the stage where the game ca
 
 ## Version notes
 
-Current version: 0.2.0
+Current version: 0.3.0
 
-First working version with core features implemented:
+Features added:
 
-- Two player game
-- Boards are automatically hidden so you can safely pass controls to other player.
-- Option to set second player to computer (difficulty selection available to select, but only easy and normal levels are implemented)
-- Show list of ships left to place (currently two ships available: 1 off length 3 and 1 off length 2)
-- Show list of ships remaining to be destroyed.
+- Ship sprites (healthy, damaged ships, missed shots on board).
+- Increased number of ships to be placed.
+- Two enemy difficulties: easy and normal.
 
 ## Future plans
 
-- Prettier UI interface
-- 3 difficulty levels for computer opponent: easy, normal and hard.
-- Play multiple games with the same player settings, and...
-- ...track score, how many times each player wins.
+- Refactor code to be more clean and tidy.
+- Improve UI.
 
 ## Personal notes
 

@@ -22,7 +22,7 @@ function scoreBoard(boardReference, shipPlacementActive = null) {
         }
         for (let [key, value] of Object.entries(shipList)) {
             const listEntry = shipListContainerElement.cloneNode();
-            listEntry.innerHTML = `Ship(${key}) x${value}`;
+            listEntry.innerHTML = `Ship (length ${key}) x${value}`;
             shipListContainer.appendChild(listEntry);
         }
     } else {
@@ -40,7 +40,7 @@ function scoreBoard(boardReference, shipPlacementActive = null) {
         }
         for (let [key, value] of Object.entries(shipList)) {
             const listEntry = shipListContainerElement.cloneNode();
-            listEntry.innerHTML = `Ship(${key}) x${value}`;
+            listEntry.innerHTML = `Ship (length ${key}) x${value}`;
             shipListContainer.appendChild(listEntry);
         }
     }

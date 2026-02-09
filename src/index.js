@@ -42,7 +42,4 @@ document.addEventListener("DOMContentLoaded", () => {
     btnStartGame.textContent = "start game";
     document.getElementById("mainApp").appendChild(form);
     document.getElementById("mainApp").appendChild(btnStartGame);
-
-    //debug: trigger start button immeditely
-    // btnStartGame.click();
 });
