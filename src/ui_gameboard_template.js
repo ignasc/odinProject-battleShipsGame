@@ -4,13 +4,14 @@ Instead, using a factory function to return a new DOM element
 */
 
 import Ship from "./ship.js";
-import singleSquare from "./ui_gameboard_single_square.js";
 import scoreBoard from "./ui_score_board.js";
 
 class GameUI {
     constructor(playerOneRef, playerTwoRef, gameEngine) {
         this.playerOneRef = playerOneRef;
         this.playerTwoRef = playerTwoRef;
+        this.playerOneBoard = playerOneRef.getBoard();
+        this.playerTwoBoard = playerTwoRef.getBoard();
         this.gameEngine = gameEngine;
         this.mainApp = document.getElementById("mainApp");
         this.playerOneTurn = true;
@@ -29,6 +30,8 @@ class GameUI {
         const gameBoardContainer = document.createElement("div");
         gameBoardContainer.setAttribute("id", "game-boards");
 
+        const gameBoardContainerTitle = document.createElement("h2");
+
         const gameBoardPlayerOneContainer = document.createElement("div");
         gameBoardPlayerOneContainer.setAttribute(
             "class",
@@ -40,6 +43,14 @@ class GameUI {
             "game-board-player-container"
         );
 
+        const playerOneTitle = gameBoardContainerTitle.cloneNode();
+        playerOneTitle.innerHTML = `Player ${this.playerOneRef.name}'s board`;
+        gameBoardPlayerOneContainer.appendChild(playerOneTitle);
+
+        const playerTwoTitle = gameBoardContainerTitle.cloneNode();
+        playerTwoTitle.innerHTML = `Player ${this.playerTwoRef.name}'s board`;
+        gameBoardPlayerTwoContainer.appendChild(playerTwoTitle);
+
         let currentPlayer = null;
 
         const controlButton = document.createElement("button");
@@ -49,7 +60,7 @@ class GameUI {
         this.mainApp.appendChild(footer);
         this.mainApp.appendChild(gameBoardContainer);
 
-        if (this.playerOneRef.getBoard().boardHidden) {
+        if (this.playerOneBoard.boardHidden) {
             footer.innerHTML = "Player TWO turn";
         } else {
             footer.innerHTML = "Player ONE turn";
@@ -58,8 +69,8 @@ class GameUI {
         // Game winning conditions
         if (
             this.gameplayActive &&
-            (this.playerOneRef.getBoard().areAllShipsDestroyed() ||
-                this.playerTwoRef.getBoard().areAllShipsDestroyed())
+            (this.playerOneBoard.areAllShipsDestroyed() ||
+                this.playerTwoBoard.areAllShipsDestroyed())
         ) {
             this.gameplayActive = false;
             this.gameEnded = true;
@@ -68,7 +79,7 @@ class GameUI {
             this.playerOneRef.disableInteraction();
             this.playerTwoRef.disableInteraction();
 
-            if (this.playerOneRef.getBoard().areAllShipsDestroyed()) {
+            if (this.playerOneBoard.areAllShipsDestroyed()) {
                 winningPlayer = this.playerTwoRef;
             } else {
                 winningPlayer = this.playerOneRef;
@@ -76,32 +87,26 @@ class GameUI {
             // generate game board
             const gameBoardPlayerOne = this.#createGameBoard(
                 this.playerOneRef.playerNumber,
-                this.playerOneRef.getBoard(),
+                this.playerOneBoard,
                 false,
                 false,
                 false
             );
             const gameBoardPlayerTwo = this.#createGameBoard(
                 this.playerTwoRef.playerNumber,
-                this.playerTwoRef.getBoard(),
+                this.playerTwoBoard,
                 false,
                 false,
                 false
             );
             gameBoardPlayerOneContainer.appendChild(
-                scoreBoard(
-                    this.playerOneRef.getBoard(),
-                    this.shipPlacementActive
-                )
+                scoreBoard(this.playerOneBoard, this.shipPlacementActive)
             );
 
             gameBoardPlayerOneContainer.appendChild(gameBoardPlayerOne);
 
             gameBoardPlayerTwoContainer.appendChild(
-                scoreBoard(
-                    this.playerTwoRef.getBoard(),
-                    this.shipPlacementActive
-                )
+                scoreBoard(this.playerTwoBoard, this.shipPlacementActive)
             );
 
             gameBoardPlayerTwoContainer.appendChild(gameBoardPlayerTwo);
@@ -115,31 +120,25 @@ class GameUI {
             currentPlayer = this.playerOneRef;
             const gameBoardPlayerOne = this.#createGameBoard(
                 this.playerOneRef.playerNumber,
-                this.playerOneRef.getBoard(),
-                this.playerOneRef.getBoard().boardHidden,
+                this.playerOneBoard,
+                this.playerOneBoard.boardHidden,
                 this.shipPlacementActive
             );
             const gameBoardPlayerTwo = this.#createGameBoard(
                 this.playerTwoRef.playerNumber,
-                this.playerTwoRef.getBoard(),
+                this.playerTwoBoard,
                 true,
                 false,
                 true
             );
             gameBoardPlayerOneContainer.appendChild(
-                scoreBoard(
-                    this.playerOneRef.getBoard(),
-                    this.shipPlacementActive
-                )
+                scoreBoard(this.playerOneBoard, this.shipPlacementActive)
             );
 
             gameBoardPlayerOneContainer.appendChild(gameBoardPlayerOne);
 
             gameBoardPlayerTwoContainer.appendChild(
-                scoreBoard(
-                    this.playerTwoRef.getBoard(),
-                    this.shipPlacementActive
-                )
+                scoreBoard(this.playerTwoBoard, this.shipPlacementActive)
             );
 
             gameBoardPlayerTwoContainer.appendChild(gameBoardPlayerTwo);
@@ -153,31 +152,25 @@ class GameUI {
             currentPlayer = this.playerTwoRef;
             const gameBoardPlayerTwo = this.#createGameBoard(
                 this.playerTwoRef.playerNumber,
-                this.playerTwoRef.getBoard(),
-                this.playerTwoRef.getBoard().boardHidden,
+                this.playerTwoBoard,
+                this.playerTwoBoard.boardHidden,
                 this.shipPlacementActive
             );
             const gameBoardPlayerOne = this.#createGameBoard(
                 this.playerOneRef.playerNumber,
-                this.playerOneRef.getBoard(),
+                this.playerOneBoard,
                 true,
                 false,
                 true
             );
             gameBoardPlayerOneContainer.appendChild(
-                scoreBoard(
-                    this.playerOneRef.getBoard(),
-                    this.shipPlacementActive
-                )
+                scoreBoard(this.playerOneBoard, this.shipPlacementActive)
             );
 
             gameBoardPlayerOneContainer.appendChild(gameBoardPlayerOne);
 
             gameBoardPlayerTwoContainer.appendChild(
-                scoreBoard(
-                    this.playerTwoRef.getBoard(),
-                    this.shipPlacementActive
-                )
+                scoreBoard(this.playerTwoBoard, this.shipPlacementActive)
             );
 
             gameBoardPlayerTwoContainer.appendChild(gameBoardPlayerTwo);
@@ -192,31 +185,25 @@ class GameUI {
             // generate game board
             const gameBoardPlayerTwo = this.#createGameBoard(
                 this.playerTwoRef.playerNumber,
-                this.playerTwoRef.getBoard(),
-                this.playerTwoRef.getBoard().boardHidden,
+                this.playerTwoBoard,
+                this.playerTwoBoard.boardHidden,
                 this.shipPlacementActive
             );
             const gameBoardPlayerOne = this.#createGameBoard(
                 this.playerOneRef.playerNumber,
-                this.playerOneRef.getBoard(),
+                this.playerOneBoard,
                 true,
                 false,
                 true
             );
             gameBoardPlayerOneContainer.appendChild(
-                scoreBoard(
-                    this.playerOneRef.getBoard(),
-                    this.shipPlacementActive
-                )
+                scoreBoard(this.playerOneBoard, this.shipPlacementActive)
             );
 
             gameBoardPlayerOneContainer.appendChild(gameBoardPlayerOne);
 
             gameBoardPlayerTwoContainer.appendChild(
-                scoreBoard(
-                    this.playerTwoRef.getBoard(),
-                    this.shipPlacementActive
-                )
+                scoreBoard(this.playerTwoBoard, this.shipPlacementActive)
             );
 
             gameBoardPlayerTwoContainer.appendChild(gameBoardPlayerTwo);
@@ -230,7 +217,7 @@ class GameUI {
             currentPlayer = this.playerTwoRef;
             // if player two is computer, execute its move
             if (!currentPlayer.isHuman) {
-                currentPlayer.executeComputerMove(this.playerOneRef.getBoard());
+                currentPlayer.executeComputerMove(this.playerOneBoard);
                 currentPlayer.disableInteraction();
                 this.playerOneRef.enableInteraction();
                 this.updateUI();
@@ -239,31 +226,25 @@ class GameUI {
             // generate game board
             const gameBoardPlayerOne = this.#createGameBoard(
                 this.playerOneRef.playerNumber,
-                this.playerOneRef.getBoard(),
-                this.playerOneRef.getBoard().boardHidden,
+                this.playerOneBoard,
+                this.playerOneBoard.boardHidden,
                 this.shipPlacementActive
             );
             const gameBoardPlayerTwo = this.#createGameBoard(
                 this.playerTwoRef.playerNumber,
-                this.playerTwoRef.getBoard(),
+                this.playerTwoBoard,
                 true,
                 false,
                 true
             );
             gameBoardPlayerOneContainer.appendChild(
-                scoreBoard(
-                    this.playerOneRef.getBoard(),
-                    this.shipPlacementActive
-                )
+                scoreBoard(this.playerOneBoard, this.shipPlacementActive)
             );
 
             gameBoardPlayerOneContainer.appendChild(gameBoardPlayerOne);
 
             gameBoardPlayerTwoContainer.appendChild(
-                scoreBoard(
-                    this.playerTwoRef.getBoard(),
-                    this.shipPlacementActive
-                )
+                scoreBoard(this.playerTwoBoard, this.shipPlacementActive)
             );
 
             gameBoardPlayerTwoContainer.appendChild(gameBoardPlayerTwo);
@@ -287,13 +268,13 @@ class GameUI {
             // switch to player two ship placement
             if (
                 this.shipPlacementActive &&
-                this.playerOneRef.getBoard().allShipsPlaced() &&
+                this.playerOneBoard.allShipsPlaced() &&
                 this.playerOneRef.playerTurn
             ) {
                 this.playerOneRef.disableInteraction();
                 this.playerTwoRef.enableInteraction();
-                this.playerOneRef.getBoard().toggleBoard();
-                this.playerTwoRef.getBoard().toggleBoard();
+                this.playerOneBoard.toggleBoard();
+                this.playerTwoBoard.toggleBoard();
                 this.updateUI();
             }
 
@@ -301,22 +282,20 @@ class GameUI {
             if (
                 this.shipPlacementActive &&
                 !this.gameplayActive &&
-                this.playerOneRef.getBoard().allShipsPlaced() &&
-                this.playerTwoRef.getBoard().allShipsPlaced()
+                this.playerOneBoard.allShipsPlaced() &&
+                this.playerTwoBoard.allShipsPlaced()
             ) {
                 this.shipPlacementActive = false;
                 this.gameplayActive = true;
                 this.playerOneRef.enableInteraction();
                 this.playerTwoRef.disableInteraction();
-                this.playerTwoRef.getBoard().toggleBoard();
+                this.playerTwoBoard.toggleBoard();
                 this.btnMessage = "Restart Game";
                 this.updateUI();
             }
         });
 
         controlButton.innerHTML = this.btnMessage;
-        // if (!this.gameplayActive || this.gameEnded) {
-        // }
         this.mainApp.appendChild(controlButton);
     }
 
@@ -333,6 +312,9 @@ class GameUI {
         } else {
             gameBoardElement.setAttribute("class", "gameBoard");
         }
+        const button = document.createElement("button");
+        button.setAttribute("class", "single-square");
+
         let shipIsRotated = false;
 
         let currentPlayer = null;
@@ -342,52 +324,66 @@ class GameUI {
             currentPlayer = this.playerOneRef;
         }
 
-        // active board highlight
-        if (shipPlacement) {
-            if (!conceal) {
-                gameBoardElement.classList.toggle("gameBoard-green");
-            }
-        } else {
-            if (conceal) {
-                gameBoardElement.classList.toggle("gameBoard-green");
-            }
-        }
-
         gameBoardElement.setAttribute("id", "gameBoard" + playerNumber);
 
         // fill boards with position squares
         for (let coordX = 0; coordX < 10; coordX++) {
             for (let coordY = 0; coordY < 10; coordY++) {
-                const newPositionSquareElement = singleSquare.cloneNode(true);
+                const newPositionSquareElement = button.cloneNode(true);
                 const positionContents = gameBoardRef.getPositionContents(
                     coordX,
                     coordY
                 );
 
                 // position square indications
-                if (positionContents === "attacked") {
-                    newPositionSquareElement.setAttribute(
-                        "class",
+                if (
+                    positionContents.wasAttacked() &&
+                    !positionContents.hasShip()
+                ) {
+                    newPositionSquareElement.classList.toggle(
                         "position-attacked"
                     );
-                } else if (positionContents === "damaged") {
-                    newPositionSquareElement.setAttribute(
-                        "class",
-                        "position-ship-damaged"
+                } else if (
+                    positionContents.wasAttacked() &&
+                    positionContents.hasShip()
+                ) {
+                    newPositionSquareElement.classList.toggle(
+                        returnShipSpriteClass(
+                            coordX,
+                            coordY,
+                            positionContents.getShipRef().isRotated(),
+                            positionContents.getShipRef(),
+                            this.gameEnded
+                        )
                     );
+                    //if ship is destroyed, remove borders to display destroyed ship
+                    if (positionContents.getShipRef().isSunk()) {
+                        newPositionSquareElement.classList.toggle(
+                            "btn-border-hide"
+                        );
+                    }
                 } else if (conceal) {
-                    newPositionSquareElement.setAttribute(
-                        "class",
+                    newPositionSquareElement.classList.toggle(
                         "position-unknown"
                     );
-                } else if (positionContents instanceof Ship) {
-                    newPositionSquareElement.setAttribute(
-                        "class",
-                        "position-ship-healthy"
+                } else if (
+                    !positionContents.wasAttacked() &&
+                    positionContents.hasShip()
+                ) {
+                    newPositionSquareElement.classList.toggle(
+                        "btn-border-hide"
+                    );
+                    newPositionSquareElement.classList.toggle(
+                        returnShipSpriteClass(
+                            coordX,
+                            coordY,
+                            positionContents.getShipRef().isRotated(),
+                            positionContents.getShipRef(),
+                            this.gameEnded
+                        )
                     );
                 } else {
-                    newPositionSquareElement.setAttribute(
-                        "class",
+                    newPositionSquareElement.classList.toggle(
                         "position-unknown"
                     );
                 }
@@ -503,6 +499,11 @@ class GameUI {
                     );
                 }
 
+                // if game ended, always remove borders from positions with ships
+                if (positionContents.hasShip() && this.gameEnded) {
+                    newPositionSquareElement.classList.add(`btn-border-hide`);
+                }
+
                 gameBoardElement.appendChild(newPositionSquareElement);
             }
         }
@@ -510,4 +511,90 @@ class GameUI {
     }
 }
 
+function returnShipSpriteClass(
+    coordX,
+    coordY,
+    shipIsRotated,
+    shipRef,
+    gameEnded = false
+) {
+    if (shipRef.isDamaged() && !gameEnded) {
+        return "shipSpriteDamaged";
+    }
+
+    if (shipRef.getLength() === 1) {
+        if (shipRef.isSunk()) {
+            if (shipIsRotated) {
+                return "shipSpriteSingleDestroyedRotated";
+            } else {
+                return "shipSpriteSingleDestroyed";
+            }
+        } else {
+            if (shipIsRotated) {
+                return "shipSpriteSingleRotated";
+            } else {
+                return "shipSpriteSingle";
+            }
+        }
+    }
+    // check if current position is front or end of the ship
+    if (
+        shipRef.getShipPositions()[0]["coords"][0] === coordX &&
+        shipRef.getShipPositions()[0]["coords"][1] === coordY
+    ) {
+        if (shipRef.isSunk()) {
+            return shipIsRotated
+                ? "shipSpriteFrontDestroyedRotated"
+                : "shipSpriteFrontDestroyed";
+        } else {
+            /*if damaged: return destroyed sprite*/
+            if (shipRef.getShipPartAt(coordX, coordY)["damaged"]) {
+                return shipIsRotated
+                    ? "shipSpriteFrontDestroyedRotated"
+                    : "shipSpriteFrontDestroyed";
+            } else {
+                return shipIsRotated
+                    ? "shipSpriteFrontRotated"
+                    : "shipSpriteFront";
+            }
+        }
+    } else if (
+        shipRef.getShipPositions()[shipRef.getShipPositions().length - 1][
+            "coords"
+        ][0] === coordX &&
+        shipRef.getShipPositions()[shipRef.getShipPositions().length - 1][
+            "coords"
+        ][1] === coordY
+    ) {
+        if (shipRef.isSunk()) {
+            return shipIsRotated
+                ? "shipSpriteEndDestroyedRotated"
+                : "shipSpriteEndDestroyed";
+        } else {
+            /*if damaged: return destroyed sprite*/
+            if (shipRef.getShipPartAt(coordX, coordY)["damaged"]) {
+                return shipIsRotated
+                    ? "shipSpriteEndDestroyedRotated"
+                    : "shipSpriteEndDestroyed";
+            } else {
+                return shipIsRotated ? "shipSpriteEndRotated" : "shipSpriteEnd";
+            }
+        }
+    } else {
+        if (shipRef.isSunk()) {
+            return shipIsRotated
+                ? "shipSpriteMidDestroyedRotated"
+                : "shipSpriteMidDestroyed";
+        } else {
+            /*if damaged: return destroyed sprite*/
+            if (shipRef.getShipPartAt(coordX, coordY)["damaged"]) {
+                return shipIsRotated
+                    ? "shipSpriteMidDestroyedRotated"
+                    : "shipSpriteMidDestroyed";
+            } else {
+                return shipIsRotated ? "shipSpriteMidRotated" : "shipSpriteMid";
+            }
+        }
+    }
+}
 export default GameUI;

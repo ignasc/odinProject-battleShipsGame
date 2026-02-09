@@ -1,5 +1,7 @@
 :root {
     --border-border: 1px solid grey;
+    --border-border-sea: 1px solid rgb(147, 239, 255);
+    --background-color-sea: rgb(233, 252, 255);
     --border-radius: 10px;
     --box-shadow: 0px 5px 5px 1px grey;
 }
@@ -25,6 +27,11 @@ h1 {
     align-items: center;
 }
 
+.playerMenu {
+
+    box-shadow: var(--box-shadow);
+}
+
 .gameBoard {
     border: 1px solid black;
     height: 20rem;
@@ -38,6 +45,20 @@ h1 {
     justify-items: stretch;
 }
 
+.gameBoard > button > img {
+    /* object-fit: scale-down; */
+    max-width: 100%;
+}
+
+.single-square {
+    background-color: var(--background-color-sea);
+    border: var(--border-border-sea);
+}
+
+.btn-border-hide {
+    border-style: none !important;
+}
+
 .gameBoard-small {
     border: 1px solid black;
     height: 15rem;
@@ -49,10 +70,6 @@ h1 {
     grid-auto-flow: row;
     align-items: stretch;
     justify-items: stretch;
-}
-
-.gameBoard-green {
-    /* border: 5px solid green; */
 }
 
 #game-boards {
@@ -88,7 +105,8 @@ h1 {
     flex-basis: 6rem;
 }
 
-.score-board > ul, li {
+.score-board > ul,
+li {
     margin: 0.5rem;
 }
 
@@ -105,7 +123,7 @@ h1 {
 }
 
 .position-unknown {
-    background-color: rgb(248, 248, 248);
+    background-color: var(--background-color-sea);
 }
 
 .position-attacked {
@@ -117,7 +135,7 @@ h1 {
 
     flex-direction: row;
     justify-content: center;
-    align-items: baseline;
+    align-items: end;
     flex-wrap: wrap;
     gap: 2rem;
 }
@@ -131,4 +149,97 @@ h1 {
     flex-direction: column;
 
     gap: 0.5rem;
+}
+
+.shipSpriteMid {
+    background-image: url("../img/ship_mid.png");
+    background-size: 100%;
+}
+
+.shipSpriteMidRotated {
+    background-image: url("../img/ship_mid.png");
+    background-size: 100%;
+    transform: rotate(-90deg);
+}
+
+.shipSpriteFront {
+    background-image: url("../img/ship_front.png");
+    background-size: 100%;
+}
+
+.shipSpriteFrontRotated {
+    background-image: url("../img/ship_front.png");
+    background-size: 100%;
+    transform: rotate(-90deg);
+}
+
+.shipSpriteEnd {
+    background-image: url("../img/ship_end.png");
+    background-size: 100%;
+}
+
+.shipSpriteEndRotated {
+    background-image: url("../img/ship_end.png");
+    background-size: 100%;
+    transform: rotate(-90deg);
+}
+
+.shipSpriteSingle {
+    background-image: url("../img/ship_single.png");
+    background-size: 100%;
+}
+
+.shipSpriteDamaged {
+    background-image: url("../img/ship_damaged.png");
+    background-size: 100%;
+}
+
+.shipSpriteSingleRotated {
+    background-image: url("../img/ship_single.png");
+    background-size: 100%;
+    transform: rotate(-90deg);
+}
+
+.shipSpriteMidDestroyed {
+    background-image: url("../img/ship_destroyed_mid.png");
+    background-size: 100%;
+}
+
+.shipSpriteMidDestroyedRotated {
+    background-image: url("../img/ship_destroyed_mid.png");
+    background-size: 100%;
+    transform: rotate(-90deg);
+}
+
+.shipSpriteFrontDestroyed {
+    background-image: url("../img/ship_destroyed_front.png");
+    background-size: 100%;
+}
+
+.shipSpriteFrontDestroyedRotated {
+    background-image: url("../img/ship_destroyed_front.png");
+    background-size: 100%;
+    transform: rotate(-90deg);
+}
+
+.shipSpriteEndDestroyed {
+    background-image: url("../img/ship_destroyed_end.png");
+    background-size: 100%;
+}
+
+.shipSpriteEndDestroyedRotated {
+    background-image: url("../img/ship_destroyed_end.png");
+    background-size: 100%;
+    transform: rotate(-90deg);
+}
+
+.shipSpriteSingleDestroyed {
+    background-image: url("../img/ship_destroyed_single.png");
+    background-size: 100%;
+}
+
+.shipSpriteSingleDestroyedRotated {
+    background-image: url("../img/ship_destroyed_single.png");
+    background-size: 100%;
+    transform: rotate(-90deg);
 }

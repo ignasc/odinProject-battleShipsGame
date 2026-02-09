@@ -12,13 +12,25 @@ describe("Player class", () => {
         player.placeShip(2, 5, 5, false);
         player.placeShip(1, 9, 9, true);
 
-        expect(player.gameBoard.getPositionContents(0, 0)).toBeInstanceOf(Ship);
-        expect(player.gameBoard.getPositionContents(0, 1)).toBeInstanceOf(Ship);
-        expect(player.gameBoard.getPositionContents(0, 2)).toBeInstanceOf(Ship);
+        expect(
+            player.gameBoard.getPositionContents(0, 0).getShipRef()
+        ).toBeInstanceOf(Ship);
+        expect(
+            player.gameBoard.getPositionContents(0, 1).getShipRef()
+        ).toBeInstanceOf(Ship);
+        expect(
+            player.gameBoard.getPositionContents(0, 2).getShipRef()
+        ).toBeInstanceOf(Ship);
 
-        expect(player.gameBoard.getPositionContents(5, 5)).toBeInstanceOf(Ship);
-        expect(player.gameBoard.getPositionContents(6, 5)).toBeInstanceOf(Ship);
+        expect(
+            player.gameBoard.getPositionContents(5, 5).getShipRef()
+        ).toBeInstanceOf(Ship);
+        expect(
+            player.gameBoard.getPositionContents(6, 5).getShipRef()
+        ).toBeInstanceOf(Ship);
 
-        expect(player.gameBoard.getPositionContents(9, 9)).toBeInstanceOf(Ship);
+        expect(
+            player.gameBoard.getPositionContents(9, 9).getShipRef()
+        ).toBeInstanceOf(Ship);
     });
 });

@@ -84,8 +84,10 @@ radioButtonHardLabel.innerHTML = "Hard";
 //Menu splits
 const playerOneMenu = divElement.cloneNode();
 playerOneMenu.setAttribute("id", "player-one-menu");
+playerOneMenu.classList.add("playerMenu");
 const playerTwoMenu = divElement.cloneNode();
-playerTwoMenu.setAttribute("id", "player-one-menu");
+playerTwoMenu.setAttribute("id", "player-two-menu");
+playerTwoMenu.classList.add("playerMenu");
 
 playerOneMenu.appendChild(playerOneNameLabel);
 playerOneMenu.appendChild(playerOneName);
