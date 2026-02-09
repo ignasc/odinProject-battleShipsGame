@@ -11,11 +11,14 @@ class Player {
 
         this.aiMoves = [];
         this.aiLevel = null;
+
+        if (!this.isHuman) {
+            this.#setupComputerAI();
+        }
     }
 
     setAiLevel(level) {
         this.aiLevel = level;
-        this.#setupComputerAI();
     }
 
     disableInteraction() {
